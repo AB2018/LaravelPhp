@@ -28,14 +28,38 @@
         <li class="header">MAIN NAVIGATION</li>
         <li class="active treeview">
           <a href="#">
-            <i class="fa fa-dashboard"></i> <span>Product</span>
+            <i class="fa fa-dashboard"></i> <span>Category</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> Add Product</a></li>
-            <li><a href="index2.html"><i class="fa fa-circle-o"></i> List Product</a></li>
+            <li class="active"><a href="{{route('category.show')}}"><i class="fa fa-circle-o"></i> Add Category</a></li>
+            <li class="active"><a href="{{route('category.view')}}"><i class="fa fa-circle-o"></i> List Category</a></li>
+          </ul>
+        </li>
+        <li class="active treeview">
+          <a href="#">
+            <i class="fa fa-dashboard"></i> <span>Tag</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="active"><a href="{{route('tag.show')}}"><i class="fa fa-circle-o"></i> Add Tag</a></li>
+            <li class="active"><a href="{{route('tag.view')}}"><i class="fa fa-circle-o"></i> List Tag</a></li>
+          </ul>
+        </li>
+        <li class="active treeview">
+          <a href="#">
+            <i class="fa fa-dashboard"></i> <span>Post</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="active"><a href="{{route('post.show')}}"><i class="fa fa-circle-o"></i> Add Post</a></li>
+            <li class="active"><a href="{{route('post.view')}}"><i class="fa fa-circle-o"></i> List Post</a></li>
           </ul>
         </li>
       </ul>

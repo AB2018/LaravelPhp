@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Crud;
-use App\Models\Flight;
+
 use Illuminate\Http\Request;
 
 class CrudController extends Controller
 {
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +16,9 @@ class CrudController extends Controller
      */
     public function index()
     {
-        //
+        $cruds = Crud::all();
+
+        return view('category/list', compact('cruds'));
     }
 
     /**
@@ -26,8 +28,8 @@ class CrudController extends Controller
      */
     public function create()
     {
-        
-       return view('add');
+
+        return view('category/add');
     }
 
     /**
@@ -38,17 +40,15 @@ class CrudController extends Controller
      */
     public function store(Request $request)
     {
-      
 
-        $request->validate([  
-            'category_name'=>'required',    
-        ]);  
-  
-        $crud = new Crud(); 
-        $crud->first_name =  $request->get('category_name');  
-        $crud->save();  
-   
-   
+        $request->validate([
+            'category_name' => 'required',
+        ]);
+
+        $crud = new Crud();
+        $crud->name =  $request->get('category_name');
+        $crud->save();
+        return redirect()->route('category.view');
     }
 
     /**
@@ -70,7 +70,8 @@ class CrudController extends Controller
      */
     public function edit($id)
     {
-        //
+        $crud = Crud::find($id);
+        return view('category/edit', compact('crud'));
     }
 
     /**
@@ -80,9 +81,16 @@ class CrudController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $id = $request->id;
+      
+        $crud = Crud::find($id);
+        
+        $crud->name =  $request->get('category_name');
+
+        $crud->save();
+        return redirect()->route('category.view');
     }
 
     /**
@@ -93,6 +101,8 @@ class CrudController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $crud=Crud::find($id);  
+        $crud->delete(); 
+        return redirect()->route('category.view');
     }
 }

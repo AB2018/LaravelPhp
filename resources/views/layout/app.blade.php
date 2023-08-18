@@ -19,6 +19,10 @@
         @include('footer')
     
     </div>
-    <script src="{{asset('js/app.min.js')}}"></script>
+    <script src="{{asset('admin_asset/plugins/jQuery/jquery-2.2.3.min.js')}}"></script>
+    <script src="{{asset('admin_asset/bootstrap/js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('admin_asset/dist/js/app.min.js')}}"></script>
+    @yield('js')
+
 </body>
 </html>
