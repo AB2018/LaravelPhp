@@ -4,7 +4,12 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="box">
-        <!-- /.box-header -->
+      <div class="box-header with-border">
+              <h3 class="box-title">Tag List</h3>
+              <div class="box-tools pull-right">
+              <a href="{{route('tag.show')}}" class="btn btn-primary">Add Tag</a>
+            </div>
+            </div>
         <div class="box-body">
           <table id="example2" class="table table-bordered table-hover">
             <thead>
@@ -32,10 +37,12 @@
             </tbody>
           </table>
         </div>
+        <div class="box-footer clearfix">
+        
+            </div>
       </div>
     </div>
   </div>
-  <a href="{{route('tag.show')}}" class="tn-block btn-primary btn-lg">Back</a>
 
 </section>
 

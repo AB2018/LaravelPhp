@@ -5,11 +5,14 @@
 <section class="content">
       <div class="row">
         <!-- left column -->
-        <div class="col-md-6">
+        <div class="col-md-12">
           <!-- general form elements -->
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">Add Tag</h3>
+              <h3 class="box-title">Edit Tag</h3>
+              <div class="box-tools pull-right">
+                <a href="{{route('tag.view')}}" class="btn btn-primary">Back</a>
+            </div>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
@@ -38,5 +41,11 @@
     </section>
 
 @endsection
+@section('js')
 
-  
+<script src="{{ asset('plugins/jQuery/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('admin_asset/validation/tag.validation.js') }}"></script>
+
+
+
+@endsection

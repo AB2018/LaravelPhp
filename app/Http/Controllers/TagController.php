@@ -86,7 +86,7 @@ class TagController extends Controller
         $id = $request->id;
       
         $crud = TagModel::find($id);
-        
+      
         $crud->tag_Name =  $request->get('tag_name');
 
         $crud->save();

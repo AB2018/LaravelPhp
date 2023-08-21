@@ -11,5 +11,8 @@
   <link rel="stylesheet" href="{{asset('admin_asset/dist/css/skins/_all-skins.min.css')}}">
   
 @yield('page-css')
+
 <link rel="stylesheet" href="{{asset('admin_asset/dist/css/AdminLTE.min.css')}}">
+<link rel="stylesheet" href="{{asset('css/custom.css')}}">
+
 </head>

@@ -8,6 +8,7 @@ use App\Models\PostModel;
 use App\Models\PostTagModel;
 use App\Models\TagModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -37,7 +38,7 @@ class PostController extends Controller
         //dd($roles);
          // dd(\DB::getQueryLog());
 
-        $cruds = PostModel::all();
+        $cruds = PostModel::paginate(3);
         return view('post/listPost', compact('cruds'));
     }
 
@@ -64,6 +65,13 @@ class PostController extends Controller
 
         $request->validate([
             'title' => 'required',
+            'editor1' => 'required',
+            'image' => 'required',
+            'status' => 'required',
+            'subtitle' => 'required',
+            'category_id' => 'required',
+            'tag_id' => 'required',
+
         ]);
 
         $input = $request->except(['_token','tag_id','category_id','image','editor1']);
@@ -163,6 +171,7 @@ class PostController extends Controller
         //$crud->post_tag;
         //dd($get_tag_id->);
       //  dd($tag_id);
+   
         return view('post/editPost',compact('crud','get','getTag'));
     }
 
@@ -176,16 +185,27 @@ class PostController extends Controller
     public function update(Request $request)
     {
        
+       //dd($request->all());
         $id = $request->id;
       
         $crud = PostModel::find($id);
-   
+      //  dd($crud);
+       
+       if($request->image){
+        $fileName = time() . '.' . $request->image->extension();
+        $request->image->storeAs('public/post_image', $fileName);
+        $crud->photo =  $fileName;
+       }
+       else{
+        $crud->photo = $crud->photo;
+       }
+
         $crud->title =  $request->get('title');
         $crud->subtitle =  $request->get('subtitle');
         $crud->status =  $request->get('status');
-        $crud->body =  $request->get('body');
-        $crud->photo =  $request->get('photo');
-
+        $crud->body =  $request->get('editor1');
+       // $crud->photo =  $fileName;
+      
         $crud->save();
         return redirect()->route('post.view');
     }
