@@ -1,10 +1,16 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ArrayController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CrudController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TagController;
+
+// Route::get('tagadd', function () {
+//     return view('tag/tagAdd');
+// });
+// Route::get('array', [ArrayController::class,'index']);
 
 
 Route::get('category/list', [CrudController::class,'index'])->name('category.view');
@@ -14,9 +20,7 @@ Route::get('category/edit/{id}', [CrudController::class,'edit'])->name('category
 Route::post('category/update', [CrudController::class,'update'])->name('category.update');
 Route::get('category/delete/{id}', [CrudController::class,'destroy'])->name('category.destroy');
 
-Route::get('add', function () {
-    return view('category/add');
-});
+
 Route::get('tag/list', [TagController::class,'index'])->name('tag.view');
 Route::get('tag/add', [TagController::class,'create'])->name('tag.show');
 Route::post('tag/create', [TagController::class,'store'])->name('tag.store');
@@ -24,12 +28,6 @@ Route::get('tag/edit/{id}', [TagController::class,'edit'])->name('tag.edit');
 Route::post('tag/update', [TagController::class,'update'])->name('tag.update');
 Route::get('tag/delete/{id}', [TagController::class,'destroy'])->name('tag.destroy');
 
-Route::get('tagadd', function () {
-    return view('tag/tagAdd');
-});
-Route::get('post/create', function () {
-    return view('post/addPost');
-});
 
 Route::post('post/create', [PostController::class,'store'])->name('post.store');
 Route::get('post/list', [PostController::class,'index'])->name('post.view');
@@ -38,10 +36,15 @@ Route::get('post/delete/{id}', [PostController::class,'destroy'])->name('post.de
 Route::get('post/edit/{id}', [PostController::class,'edit'])->name('post.edit');
 Route::post('posts/update', [PostController::class,'update'])->name('posts.update');
 
-Route::get('array', [ArrayController::class,'index']);
-Route::get('/', function () {
-    return view('dashboard');
+Route::get('admin', function () {
+    return view('admin/addAdmin');
 });
+
+Route::post('admin/create', [AdminController::class,'store'])->name('admin.store');
+Route::get('admin/list', [AdminController::class,'index'])->name('admin.view');
+Route::get('admin/add', [AdminController::class,'create'])->name('admin.show');
+Route::get('tadmin/edit/{id}', [AdminController::class,'edit'])->name('admin.edit');
+
 
 
 

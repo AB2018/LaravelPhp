@@ -23,6 +23,9 @@
                             <input type="hidden" name="id" value="{{$crud->id}}">
                             <label>Title</label>
                             <input type="text" name="title" class="form-control" style="width: 100%;" value="{{$crud->title}}">
+                            @error('title')
+                            <p style="color:red">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div class="form-group">
                             <label>Tag</label>
@@ -44,6 +47,9 @@
                                 </option>
                                 @endforeach
                             </select>
+                            @error('tag_id')
+                            <p style="color:red">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -67,25 +73,35 @@
                                 </option>
                                 @endforeach
                             </select>
+                            @error('category_id')
+                            <p style="color:red">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div class="form-group">
                             <label>Status</label>
                             <input type="text" name="status" class="form-control" value="{{$crud->status}}" style="width: 100%;">
-
+                            @error('status')
+                            <p style="color:red">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Subtitle</label>
                             <input type="text" name="subtitle" class="form-control" value="{{$crud->subtitle}}" style="width: 100%;">
-
+                            @error('subtitle')
+                            <p style="color:red">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Photo</label>
-                            <input type="file" name="image" class="form-control" style="width: 100%;">
+                            <input type="file" id="image_id" name="image" class="form-control" value="{{$crud->photo}}" style="width: 100%;">
                             <img src="{{asset('storage/post_image/' . $crud->photo)}}" width="80" height="60" />
+                            @error('image')
+                            <p style="color:red">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
 
@@ -93,11 +109,14 @@
                         <div class="form-group">
                             <label>Body</label>
                             <textarea id="editor1" name="editor1" rows="10" cols="80"> {{$crud->body}}</textarea>
+                            @error('editor1')
+                        <p style="color:red">{{ $message }}</p>
+                        @enderror
                         </div>
                     </div>
                 </div>
                 <div class="box-footer">
-                    <button type="submit" class="" onclick="return confirm('Are you sure want to save?')">Submit</button>
+                    <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure want to save?')">Submit</button>
                 </div>
             </form>
 
@@ -118,8 +137,6 @@
         // Replace the <textarea id="editor1"> with a CKEditor
         // instance, using default configuration.
         CKEDITOR.replace('editor1');
-        //bootstrap WYSIHTML5 - text editor
-        $(".textarea").wysihtml5();
     });
 </script>
 <script src="{{ asset('plugins/jQuery/jquery.validate.min.js') }}"></script>

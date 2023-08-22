@@ -84,6 +84,25 @@
           <li class="{{($route == 'post.view') ? 'active' : '' }}"><a href="{{route('post.view')}}"><i class="fa fa-circle-o"></i> List Post</a></li>
         </ul>
       </li>
+      @php
+    $active1 = '';
+    $route =request()->route()->getName();
+    if($route == 'admin.view' || $route == 'admin.show'){
+         $active1 = 'active';
+    }
+    @endphp
+      <li class="treeview {{$active1}}">
+        <a href="#">
+          <i class="fa fa-dashboard"></i> <span>Admin</span>
+          <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          <li class="{{($route == 'admin.show') ? 'active' : '' }}"><a href="{{route('admin.show')}}"><i class="fa fa-circle-o"></i> Add Admin</a></li>
+          <li class="{{($route == 'admin.view') ? 'active' : '' }}"><a href="{{route('admin.view')}}"><i class="fa fa-circle-o"></i> List Admin</a></li>
+        </ul>
+      </li>
     </ul>
   </section>
   <!-- /.sidebar -->

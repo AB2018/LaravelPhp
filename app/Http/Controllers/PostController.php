@@ -66,7 +66,7 @@ class PostController extends Controller
         $request->validate([
             'title' => 'required',
             'editor1' => 'required',
-            'image' => 'required',
+            'image' => 'required | mimes:jpg,jpeg,png',
             'status' => 'required',
             'subtitle' => 'required',
             'category_id' => 'required',
@@ -184,12 +184,23 @@ class PostController extends Controller
      */
     public function update(Request $request)
     {
-       
+        
        //dd($request->all());
         $id = $request->id;
       
         $crud = PostModel::find($id);
-      //  dd($crud);
+        //dd($crud);
+
+        $request->validate([
+            'title' => 'required',
+            'editor1' => 'required',
+            'image' => 'mimes:jpg,jpeg,png',
+            'status' => 'required',
+            'subtitle' => 'required',
+            'category_id' => 'required',
+            'tag_id' => 'required',
+    
+        ]);
        
        if($request->image){
         $fileName = time() . '.' . $request->image->extension();
