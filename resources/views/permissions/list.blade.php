@@ -5,9 +5,9 @@
     <div class="col-md-12">
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Admin List</h3>
+          <h3 class="box-title">Permission List</h3>
           <div class="box-tools pull-right">
-            <a href="{{route('admin.show')}}" class="btn btn-primary">Add Admin</a>
+            <a href="{{route('permission.add')}}" class="btn btn-primary">Add Admin</a>
           </div>
         </div>
         <!-- /.box-header -->
@@ -16,24 +16,22 @@
             <thead>
               <tr>
                 <th>ID</th>
+                <th>Slug</th>
                 <th>Name</th>
-                <th>Contact</th>
                 <th>Status</th>
-                <th>Email</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              @foreach($admin_data as $crud)
+              @foreach($permission_data as $crud)
               <tr>
                 <td>{{$crud->id}}</td>
+                <td>{{$crud->slug}}</td>
                 <td>{{$crud->name}}</td>
-                <td>{{$crud->contact}}</td>
                 <td>{{$crud->status}}</td>
-                <td>{{$crud->email}}</td>
                 <td>
-                  <a class="fa fa-edit" style='font-size:20px;color:#24333b' href="{{route('admin.edit',['id'=>$crud->id])}}" ></a>
-                  <a class="fa fa-trash" style='font-size:20px;color:red' href="{{ route('admin.destroy', ['id'=>$crud->id])}}"  onclick="return confirm('Are you sure to delete?')"></a>
+                  <a class="fa fa-edit" style='font-size:20px;color:#24333b' href="{{route('permission.edit',['id'=>$crud->id])}}"></a>
+                  <a class="fa fa-trash" style='font-size:20px;color:red' href="{{ route('permission.destroy', ['id'=>$crud->id])}}"  onclick="return confirm('Are you sure to delete?')""  onclick="return confirm('Are you sure to delete?')"></a>
                 </td>
               </tr>
               @endforeach
@@ -41,7 +39,7 @@
           </table>
         </div>
         <div class="box-footer clearfix">
-          {{ $admin_data->links() }}
+          {{ $permission_data->links() }}
         </div>
       </div>
 </section>

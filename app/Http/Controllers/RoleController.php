@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AdminModel;
+use App\Models\RoleModel;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
-class AdminController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +15,8 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $admin_data = AdminModel::paginate(3);
-        return view('admin/listAdmin', compact('admin_data'));
+        $role_data = RoleModel::paginate(3);
+        return view('role.list', compact('role_data'));
     }
 
     /**
@@ -26,7 +26,8 @@ class AdminController extends Controller
      */
     public function create()
     {
-        return view('admin.addAdmin');
+      
+        return view('role/form');
     }
 
     /**
@@ -37,36 +38,25 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        $id = $request->id;
         $request->validate([
+            'role' => 'required',
             'name' => 'required',
-            'contact' => 'required',
             'status' => 'required',
-            'email' => 'required',
-            'password' => 'required_if:id,id',
-        ]);    
-        $hashedPassword = Hash::make($request->password);
-          $admin_data = [
-                'name' => $request->name,
-                'contact' => $request->contact,
-                'status' => $request->status,      
-                'email' => $request->email,
-                'pasword' => $hashedPassword,
-            ];       
+        ]);     
         
+        $role_data = $request->except(['_token']);    
+
         if( $request->id){
            
             $id = $request->id;
-            AdminModel::where('id', $id)
-            ->update($admin_data);
+            RoleModel::where('id', $id)
+            ->update($role_data);
           
         } else {
            
-            $adminModel = AdminModel::create($admin_data);
+            $roleModel = RoleModel::create($role_data);
         }
-        return redirect()->route('admin.view');
-
-        
+        return redirect()->route('role.view');
     }
 
     /**
@@ -88,9 +78,8 @@ class AdminController extends Controller
      */
     public function edit($id)
     {
-        $crud = AdminModel::find($id);
-        return view('admin/addAdmin', compact('crud'));
-    
+        $crud = RoleModel::find($id);
+        return view('role/form', compact('crud'));
     }
 
     /**
@@ -100,10 +89,27 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, AdminModel $adminModel)
+    public function update(Request $request, $id)
     {
-
-       
+        //
+    }
+    function check(Request $request)
+    {
+     if($request->get('role'))
+     {
+      $role = $request->get('role');
+      $data = DB::table("role")
+       ->where('role', $role)
+       ->count();
+      if($data > 0)
+      {
+       echo 'not_unique';
+      }
+      else
+      {
+       echo 'unique';
+      }
+     }
     }
 
     /**
@@ -114,8 +120,8 @@ class AdminController extends Controller
      */
     public function destroy($id)
     {
-        $crud = AdminModel::find($id);  
+        $crud = RoleModel::find($id);  
         $crud->delete(); 
-        return redirect()->route('admin.view');
+        return redirect()->route('role.view');
     }
 }

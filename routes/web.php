@@ -4,8 +4,11 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ArrayController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CrudController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TagController;
+use App\Models\RoleModel;
 
 // Route::get('tagadd', function () {
 //     return view('tag/tagAdd');
@@ -36,15 +39,36 @@ Route::get('post/delete/{id}', [PostController::class,'destroy'])->name('post.de
 Route::get('post/edit/{id}', [PostController::class,'edit'])->name('post.edit');
 Route::post('posts/update', [PostController::class,'update'])->name('posts.update');
 
-Route::get('admin', function () {
-    return view('admin/addAdmin');
+Route::get('/', function () {
+    return view('dashboard');
 });
 
 Route::post('admin/create', [AdminController::class,'store'])->name('admin.store');
 Route::get('admin/list', [AdminController::class,'index'])->name('admin.view');
 Route::get('admin/add', [AdminController::class,'create'])->name('admin.show');
-Route::get('tadmin/edit/{id}', [AdminController::class,'edit'])->name('admin.edit');
+Route::get('admin/edit/{id}', [AdminController::class,'edit'])->name('admin.edit');
+Route::get('admin/delete/{id}', [AdminController::class,'destroy'])->name('admin.destroy');
+Route::get('/per', function () {
+    return view('permissions/add');
+});
 
+Route::get('permission/add', [PermissionController::class,'create'])->name('permission.add');
+Route::post('permission/create', [PermissionController::class,'store'])->name('permission.store');
+Route::get('permission/list', [PermissionController::class,'index'])->name('permission.view');
+Route::get('permission/edit/{id}', [PermissionController::class,'edit'])->name('permission.edit');
+Route::get('permission/delete/{id}', [PermissionController::class,'destroy'])->name('permission.destroy');
+Route::post('slug/check', [PermissionController::class,'check'])->name('slug.check');
+
+Route::get('role/add', [RoleController::class,'create'])->name('role.add');
+Route::post('role/create', [RoleController::class,'store'])->name('role.store');
+Route::get('role/list', [RoleController::class,'index'])->name('role.view');
+Route::get('role/edit/{id}', [RoleController::class,'edit'])->name('role.edit');
+Route::get('role/delete/{id}', [RoleController::class,'destroy'])->name('role.destroy');
+Route::post('role/check', [RoleController::class,'check'])->name('role.check');
+
+Route::get('/rol', function () {
+    return view('role/form');
+});
 
 
 

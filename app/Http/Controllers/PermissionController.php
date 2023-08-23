@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AdminModel;
+use App\Models\PermissionModel;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
-class AdminController extends Controller
+class PermissionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +15,9 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $admin_data = AdminModel::paginate(3);
-        return view('admin/listAdmin', compact('admin_data'));
+        
+        $permission_data = PermissionModel::paginate(3);
+        return view('permissions/list', compact('permission_data'));
     }
 
     /**
@@ -26,7 +27,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        return view('admin.addAdmin');
+        return view('permissions.form');
     }
 
     /**
@@ -37,36 +38,25 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        $id = $request->id;
         $request->validate([
+            'slug' => 'required',
             'name' => 'required',
-            'contact' => 'required',
             'status' => 'required',
-            'email' => 'required',
-            'password' => 'required_if:id,id',
-        ]);    
-        $hashedPassword = Hash::make($request->password);
-          $admin_data = [
-                'name' => $request->name,
-                'contact' => $request->contact,
-                'status' => $request->status,      
-                'email' => $request->email,
-                'pasword' => $hashedPassword,
-            ];       
+        ]);     
         
+        $permission_data = $request->except(['_token']);    
+
         if( $request->id){
            
             $id = $request->id;
-            AdminModel::where('id', $id)
-            ->update($admin_data);
+            PermissionModel::where('id', $id)
+            ->update($permission_data);
           
         } else {
            
-            $adminModel = AdminModel::create($admin_data);
+            $permissionModel = PermissionModel::create($permission_data);
         }
-        return redirect()->route('admin.view');
-
-        
+        return redirect()->route('permission.view');
     }
 
     /**
@@ -88,8 +78,9 @@ class AdminController extends Controller
      */
     public function edit($id)
     {
-        $crud = AdminModel::find($id);
-        return view('admin/addAdmin', compact('crud'));
+        
+        $crud = PermissionModel::find($id);
+        return view('permissions/form', compact('crud'));
     
     }
 
@@ -100,10 +91,27 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, AdminModel $adminModel)
+    public function update(Request $request, $id)
     {
-
-       
+        //
+    }
+     function check(Request $request)
+    {
+     if($request->get('slug'))
+     {
+      $slug = $request->get('slug');
+      $data = DB::table("permission")
+       ->where('slug', $slug)
+       ->count();
+      if($data > 0)
+      {
+       echo 'not_unique';
+      }
+      else
+      {
+       echo 'unique';
+      }
+     }
     }
 
     /**
@@ -114,8 +122,8 @@ class AdminController extends Controller
      */
     public function destroy($id)
     {
-        $crud = AdminModel::find($id);  
+        $crud = PermissionModel::find($id);  
         $crud->delete(); 
-        return redirect()->route('admin.view');
+        return redirect()->route('permission.view');
     }
 }

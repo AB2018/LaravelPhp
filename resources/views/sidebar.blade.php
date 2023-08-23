@@ -103,6 +103,44 @@
           <li class="{{($route == 'admin.view') ? 'active' : '' }}"><a href="{{route('admin.view')}}"><i class="fa fa-circle-o"></i> List Admin</a></li>
         </ul>
       </li>
+      @php
+    $active1 = '';
+    $route =request()->route()->getName();
+    if($route == 'permission.view' || $route == 'permission.add'){
+         $active1 = 'active';
+    }
+    @endphp
+      <li class="treeview {{$active1}}">
+        <a href="#">
+          <i class="fa fa-dashboard"></i> <span>Permission</span>
+          <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          <li class="{{($route == 'permission.add') ? 'active' : '' }}"><a href="{{route('permission.add')}}"><i class="fa fa-circle-o"></i> Add Admin</a></li>
+          <li class="{{($route == 'permission.view') ? 'active' : '' }}"><a href="{{route('permission.view')}}"><i class="fa fa-circle-o"></i> List Admin</a></li>
+        </ul>
+      </li>
+      @php
+    $active1 = '';
+    $route =request()->route()->getName();
+    if($route == 'role.view' || $route == 'role.add'){
+         $active1 = 'active';
+    }
+    @endphp
+      <li class="treeview {{$active1}}">
+        <a href="#">
+          <i class="fa fa-dashboard"></i> <span>Roles</span>
+          <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          <li class="{{($route == 'role.add') ? 'active' : '' }}"><a href="{{route('role.add')}}"><i class="fa fa-circle-o"></i> Add Role</a></li>
+          <li class="{{($route == 'role.view') ? 'active' : '' }}"><a href="{{route('role.view')}}"><i class="fa fa-circle-o"></i> List Role</a></li>
+        </ul>
+      </li>
     </ul>
   </section>
   <!-- /.sidebar -->

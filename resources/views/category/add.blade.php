@@ -46,6 +46,4 @@
 <script src="{{ asset('plugins/jQuery/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('admin_asset/validation/category.validation.js') }}"></script>
 
-
-
 @endsection
