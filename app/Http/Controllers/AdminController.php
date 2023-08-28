@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\AdminModel;
+use App\Models\AdminRoles;
+use App\Models\RoleModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -14,9 +17,12 @@ class AdminController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
+    
     {
-        $admin_data = AdminModel::paginate(3);
-        return view('admin/listAdmin', compact('admin_data'));
+        $getRole = RoleModel::all();
+        $admin_data = AdminModel::with('roles')->paginate(3);
+     
+        return view('admin/listAdmin', compact('admin_data','getRole'));
     }
 
     /**
@@ -51,7 +57,7 @@ class AdminController extends Controller
                 'contact' => $request->contact,
                 'status' => $request->status,      
                 'email' => $request->email,
-                'pasword' => $hashedPassword,
+                'password' => $hashedPassword,
             ];       
         
         if( $request->id){
@@ -71,17 +77,17 @@ class AdminController extends Controller
     public function login(Request $request)
     {
         
-        $email = $request->email;
-        $password = $request->password;
-        $hashedPassword = Hash::make($request->password);
-        $admin_data = AdminModel::where('email',$email)->where('pasword',$hashedPassword)->get();
-    //   dd($admin_data);
+    //     $email = $request->email;
+    //     $password = $request->password;
+    //     $hashedPassword = Hash::make($request->password);
+    //     $admin_data = AdminModel::where('email',$email)->where('pasword',$hashedPassword)->get();
+    // //   dd($admin_data);
      
 
-        if($admin_data){
-           // dd("jhvgkjv");
-            return view('dashboard');
-        }
+    //     if($admin_data){
+    //        // dd("jhvgkjv");
+    //         return view('dashboard');
+    //     }
             
     }
 
@@ -92,9 +98,23 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+           //  dd($request);
+           $admin_id = $request->admin_id;
+           //  dd($role_id);
+           $role_id =  $request->role_id;
+           foreach ($role_id as $role_id) {
+               $roles_permissions[] = [
+                   'admin_id' => $admin_id,
+                   'role_id' => $role_id,
+               ];
+           }
+           DB::table('admin_roles')->where('admin_id', $admin_id)->delete();
+   
+           $roles_permissions_model = AdminRoles::insert($roles_permissions);
+   
+           return redirect()->route('admin.view');
     }
 
     /**

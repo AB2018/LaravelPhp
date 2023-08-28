@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ArrayController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CrudController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RoleController;
@@ -42,10 +43,13 @@ Route::post('posts/update', [PostController::class,'update'])->name('posts.updat
 // Route::get('/', function () {
 //     return view('dashboard');
 // });
-Route::post('/dashboard', [AdminController::class,'login'])->name('login.check');
+Route::post('/login', [LoginController::class, 'authenticate'])->name('login');
 
 Route::get('/', function () {
     return view('login/login');
+});
+Route::get('/dashboard', function () {
+    return view('dashboard');
 });
 
 
@@ -54,6 +58,8 @@ Route::get('admin/list', [AdminController::class,'index'])->name('admin.view');
 Route::get('admin/add', [AdminController::class,'create'])->name('admin.show');
 Route::get('admin/edit/{id}', [AdminController::class,'edit'])->name('admin.edit');
 Route::get('admin/delete/{id}', [AdminController::class,'destroy'])->name('admin.destroy');
+Route::post('admin/roles', [AdminController::class,'show'])->name('admin.roles');
+
 Route::get('/per', function () {
     return view('permissions/add');
 });
