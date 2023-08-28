@@ -42,7 +42,7 @@
                             <select class="form-control select2" name="tag_id[]" multiple="multiple" data-placeholder="Select a tag" style="width: 100%;">
                                 <option>select</option>
                                 @foreach ($getTag as $tag)
-                                <option value="{{$tag->id}}">
+                                <option  value="{{$tag->id}}">
                                     {{$tag->tag_Name}}
                                 </option>
                                 @endforeach

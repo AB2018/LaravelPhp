@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PermissionModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class PermissionController extends Controller
 {
@@ -15,7 +16,7 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        
+
         $permission_data = PermissionModel::paginate(3);
         return view('permissions/list', compact('permission_data'));
     }
@@ -39,21 +40,38 @@ class PermissionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'slug' => 'required',
-            'name' => 'required',
+            'slug' => 'required | regex:/(^([a-z_A-Z]+)$)/',
+            //'name' => 'required',
             'status' => 'required',
-        ]);     
-        
-        $permission_data = $request->except(['_token']);    
+        ]);
 
-        if( $request->id){
-           
+        if ($request->get('slug')) {
+            $slug = $request->get('slug');
+            $data = DB::table("permission")
+                ->where('slug', $slug)
+                ->count();
+
+            if ($data > 0) {
+
+                return redirect()->back()->with('slugExist', 'Slug Already exist');
+            }
+        }
+
+
+        $permission_data = $request->except(['_token']);
+
+        $permission_name =  $request->slug;
+        $permission_name = str_replace('_', ' ', $permission_name);
+
+
+
+        if ($request->id) {
+
             $id = $request->id;
             PermissionModel::where('id', $id)
-            ->update($permission_data);
-          
+                ->update($permission_data);
         } else {
-           
+
             $permissionModel = PermissionModel::create($permission_data);
         }
         return redirect()->route('permission.view');
@@ -78,10 +96,9 @@ class PermissionController extends Controller
      */
     public function edit($id)
     {
-        
+
         $crud = PermissionModel::find($id);
         return view('permissions/form', compact('crud'));
-    
     }
 
     /**
@@ -95,23 +112,19 @@ class PermissionController extends Controller
     {
         //
     }
-     function check(Request $request)
+    function check(Request $request)
     {
-     if($request->get('slug'))
-     {
-      $slug = $request->get('slug');
-      $data = DB::table("permission")
-       ->where('slug', $slug)
-       ->count();
-      if($data > 0)
-      {
-       echo 'not_unique';
-      }
-      else
-      {
-       echo 'unique';
-      }
-     }
+        if ($request->get('slug')) {
+            $slug = $request->get('slug');
+            $data = DB::table("permission")
+                ->where('slug', $slug)
+                ->count();
+            if ($data > 0) {
+                echo 'not_unique';
+            } else {
+                echo 'unique';
+            }
+        }
     }
 
     /**
@@ -122,8 +135,8 @@ class PermissionController extends Controller
      */
     public function destroy($id)
     {
-        $crud = PermissionModel::find($id);  
-        $crud->delete(); 
+        $crud = PermissionModel::find($id);
+        $crud->delete();
         return redirect()->route('permission.view');
     }
 }

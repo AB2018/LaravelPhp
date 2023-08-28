@@ -23,9 +23,16 @@
                     <div class="col-md-6">
                         <div class="form-group">
                         <input type="hidden" name="id" value="{{ old('id', isset($crud) ? $crud->id : '') }}">
-                            <label class="required">Role</label>
-                            <input type="text" name="Role" id="Role" class="form-control" style="width: 100%;" value="{{ old('role', isset($crud) ? $crud->role : '') }}">
+                            <label class="required">Slug</label>
+                            <input type="text" name="slug" id="slug" class="form-control" style="width: 100%;" value="{{ old('role', isset($crud) ? $crud->role : '') }}">
                             <span id="availability"></span>
+                            @if (\Session::has('slugExist'))
+                                            <div  style="color:red">
+                                                <ul>
+                                                    <li>{!! \Session::get('slugExist') !!}</li>
+                                                </ul>
+                                            </div>
+                                        @endif
                             @error('role')
                             <p style="color:red">{{ $message }}</p>
                             @enderror
@@ -33,8 +40,8 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="required">Name</label>
-                            <input type="text" name="name" id="name" readonly class="form-control" style="width: 100%;" value="{{ old('name', isset($crud) ? $crud->name : '') }}">
+                            <label class="required">Role</label>
+                            <input type="text" name="role" id="role" readonly class="form-control" style="width: 100%;" value="{{ old('name', isset($crud) ? $crud->name : '') }}">
                             @error('role')
                             <p style="color:red">{{ $message }}</p>
                             @enderror
@@ -76,7 +83,7 @@
 <script src="{{ asset('plugins/jQuery/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('admin_asset/validation/role.validation.js') }}"></script>
 <script>
-var roleCheck = "{{ route('role.check') }}";
+var slugCheck = "{{ route('slug.check') }}";
 var token = "{{ csrf_token() }}";
 </script>
 

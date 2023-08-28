@@ -68,6 +68,23 @@ class AdminController extends Controller
 
         
     }
+    public function login(Request $request)
+    {
+        
+        $email = $request->email;
+        $password = $request->password;
+        $hashedPassword = Hash::make($request->password);
+        $admin_data = AdminModel::where('email',$email)->where('pasword',$hashedPassword)->get();
+    //   dd($admin_data);
+     
+
+        if($admin_data){
+           // dd("jhvgkjv");
+            return view('dashboard');
+        }
+            
+    }
+
 
     /**
      * Display the specified resource.

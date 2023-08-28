@@ -11,7 +11,7 @@ $('#form').validate({
 		status: "required",
 
 	}, messages: {
-		name: "Please enter name",
+		name: "Please enter yourname",
 		status: "Please select status",
 
 	},

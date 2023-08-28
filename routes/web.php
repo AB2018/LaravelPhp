@@ -39,9 +39,15 @@ Route::get('post/delete/{id}', [PostController::class,'destroy'])->name('post.de
 Route::get('post/edit/{id}', [PostController::class,'edit'])->name('post.edit');
 Route::post('posts/update', [PostController::class,'update'])->name('posts.update');
 
+// Route::get('/', function () {
+//     return view('dashboard');
+// });
+Route::post('/dashboard', [AdminController::class,'login'])->name('login.check');
+
 Route::get('/', function () {
-    return view('dashboard');
+    return view('login/login');
 });
+
 
 Route::post('admin/create', [AdminController::class,'store'])->name('admin.store');
 Route::get('admin/list', [AdminController::class,'index'])->name('admin.view');
@@ -64,7 +70,8 @@ Route::post('role/create', [RoleController::class,'store'])->name('role.store');
 Route::get('role/list', [RoleController::class,'index'])->name('role.view');
 Route::get('role/edit/{id}', [RoleController::class,'edit'])->name('role.edit');
 Route::get('role/delete/{id}', [RoleController::class,'destroy'])->name('role.destroy');
-Route::post('role/check', [RoleController::class,'check'])->name('role.check');
+Route::post('role/check', [RoleController::class,'check'])->name('slug.check');
+Route::post('role/permission', [RoleController::class,'show'])->name('role.permission');
 
 Route::get('/rol', function () {
     return view('role/form');

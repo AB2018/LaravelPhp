@@ -3,15 +3,15 @@ $('#form').validate({
 	ignore: '',
 	rules: {
 
-		role: {
+		slug: {
 			required: true,
 			validateRole: true,
 		},
-		name: "required",
+		role: "required",
 		status: "required",
 
 	}, messages: {
-		name: "Please enter me",
+		role: "Please enter me",
 		status: "Please select status",
 
 	},
@@ -21,24 +21,24 @@ $('#form').validate({
 
 $.validator.addMethod("validateRole", function (value, element) {
 	var regex = new RegExp("^[a-z_A-Z]+$");
-	var role = $('#role').val();
-	if (regex.test(role)) {
+	var slug = $('#slug').val();
+	if (regex.test(slug)) {
 		var i;
-		var roles = role.split('_');
-		for (i = 0; i < roles.length; i++) {
-			roles[i] = roles[i].charAt(0).toUpperCase() + roles[i].slice(1);
+		var slugs = slug.split('_');
+		for (i = 0; i < slugs.length; i++) {
+			slugs[i] = slugs[i].charAt(0).toUpperCase() + slugs[i].slice(1);
 		}
-		$('#role').blur(function () {
-			var slug = $('#role').val();
+		$('#slug').blur(function () {
+			var slug = $('#slug').val();
 			// var route = 
 			//var url = "{{ route('slug.check') }}";
 		   console.log("chek");
 			$.ajax({
 				method:"POST",	
-				url:roleCheck,
+				url:slugCheck,
 		
 				data:{
-					'role':role,
+					'slug':slug,
 					"_token": token,
 				},
 				success:function(result)
@@ -47,13 +47,13 @@ $.validator.addMethod("validateRole", function (value, element) {
 				 {
 				  $('#availability').html('<label class="text-success">Slug Available</label>');
 				  $('#check').attr('disabled', false);
-				  $('#name').val(slugs.join(' '));
+				  $('#role').val(slugs.join(' '));
 				 }
 				 else
 				 {
-				  $('#availability').html('<label class="text-danger">Slug not Available</label>');
+				  $('#availability').html('<label class="text-danger">Slug alreday exist</label>');
 				  $('#check').attr('disabled', true);
-				  $('#name').val('');
+				  $('#role').val('');
 				 }
 				}
 			   })
@@ -63,4 +63,3 @@ $.validator.addMethod("validateRole", function (value, element) {
 	}
 	return false;
 }, "Only alphabet and underscore are allowed");
-
