@@ -7,7 +7,7 @@
         <div class="box-header with-border">
           <h3 class="box-title">Permission List</h3>
           <div class="box-tools pull-right">
-            <a href="{{route('permission.add')}}" class="btn btn-primary">Add Admin</a>
+            <a href="{{route('permission.add')}}" class="btn btn-primary">Add Permission</a>
           </div>
         </div>
         <!-- /.box-header -->

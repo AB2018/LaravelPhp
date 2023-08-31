@@ -8,6 +8,8 @@ $('#form').validate({
 		category_name: "Please enter your category name",
 	
 	},
+	
 
 
 });
+

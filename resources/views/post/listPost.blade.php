@@ -21,7 +21,9 @@
                 <th>Status</th>
                 <th>Body</th>
                 <th>Photo</th>
+                @if (checkSlug('edit_post') == true || checkSlug('delete_post') == true)
                 <th>Action</th>
+            @endif
               </tr>
             </thead>
             <tbody>
@@ -33,10 +35,19 @@
                 <td>{{$crud->status}}</td>
                 <td>{!!$crud->body!!}</td>
                 <td><img src="{{ asset('storage/post_image/'.$crud->photo) }}" width="80" height="40"></td>
+                @if (checkSlug('edit_post') == true || checkSlug('delete_post') == true)
                 <td>
-                  <a class="fa fa-edit" style='font-size:20px;color:#24333b' href="{{route('post.edit',['id'=>$crud->id])}}"></a>
-                  <a class="fa fa-trash" style='font-size:20px;color:red' href="{{route('post.destroy',['id'=>$crud->id])}}" onclick="return confirm('Are you sure to delete?')"></a>
+                  @if(checkSlug('edit_post') == true )
+                  <a class="fa fa-edit" style='font-size:20px;color:#24333b'
+                        href="{{ route('post.edit', ['id' => $crud->id]) }}"></a>
+                  @endif
+                  @if(checkSlug('delete_post') == true)
+                  <a class="fa fa-trash" style='font-size:20px;color:red'
+                        href="{{ route('post.destroy', ['id' => $crud->id]) }}"
+                        onclick="return confirm('Are you sure to delete?')"></a>
+                        @endif
                 </td>
+                @endif
               </tr>
               @endforeach
             </tbody>

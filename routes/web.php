@@ -8,8 +8,11 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SiteController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\UserController;
 use App\Models\RoleModel;
+
 
 // Route::get('tagadd', function () {
 //     return view('tag/tagAdd');
@@ -17,40 +20,35 @@ use App\Models\RoleModel;
 // Route::get('array', [ArrayController::class,'index']);
 
 
-Route::get('category/list', [CrudController::class,'index'])->name('category.view');
-Route::get('category/add', [CrudController::class,'create'])->name('category.show');
-Route::post('category/create', [CrudController::class,'store'])->name('category.store');
-Route::get('category/edit/{id}', [CrudController::class,'edit'])->name('category.edit');
-Route::post('category/update', [CrudController::class,'update'])->name('category.update');
-Route::get('category/delete/{id}', [CrudController::class,'destroy'])->name('category.destroy');
-
-
-Route::get('tag/list', [TagController::class,'index'])->name('tag.view');
-Route::get('tag/add', [TagController::class,'create'])->name('tag.show');
-Route::post('tag/create', [TagController::class,'store'])->name('tag.store');
-Route::get('tag/edit/{id}', [TagController::class,'edit'])->name('tag.edit');
-Route::post('tag/update', [TagController::class,'update'])->name('tag.update');
-Route::get('tag/delete/{id}', [TagController::class,'destroy'])->name('tag.destroy');
-
-
-Route::post('post/create', [PostController::class,'store'])->name('post.store');
-Route::get('post/list', [PostController::class,'index'])->name('post.view');
-Route::get('post/add', [PostController::class,'create'])->name('post.show');
-Route::get('post/delete/{id}', [PostController::class,'destroy'])->name('post.destroy');
-Route::get('post/edit/{id}', [PostController::class,'edit'])->name('post.edit');
-Route::post('posts/update', [PostController::class,'update'])->name('posts.update');
-
 // Route::get('/', function () {
 //     return view('dashboard');
 // });
-Route::post('/login', [LoginController::class, 'authenticate'])->name('login');
+Route::group(['middleware' => ['checkInput']], function() {
+   
 
-Route::get('/', function () {
-    return view('login/login');
-});
-Route::get('/dashboard', function () {
-    return view('dashboard');
-});
+Route::get('category/list', [CrudController::class,'index'])->name('category.view')->middleware('CheckPermission:list_category');
+Route::get('category/add', [CrudController::class,'create'])->name('category.show')->middleware('CheckPermission:add_category');
+Route::post('category/create', [CrudController::class,'store'])->name('category.store')->middleware('CheckPermission:create_category');
+Route::get('category/edit/{id}', [CrudController::class,'edit'])->name('category.edit')->middleware('CheckPermission:edit_category');
+Route::post('category/update', [CrudController::class,'update'])->name('category.update')->middleware('CheckPermission:update_category');
+Route::get('category/delete/{id}', [CrudController::class,'destroy'])->name('category.destroy')->middleware('CheckPermission:delete_category');
+
+
+Route::get('tag/list', [TagController::class,'index'])->name('tag.view')->middleware('CheckPermission:list_tag');
+Route::get('tag/add', [TagController::class,'create'])->name('tag.show')->middleware('CheckPermission:add_tag');
+Route::post('tag/create', [TagController::class,'store'])->name('tag.store')->middleware('CheckPermission:create_tag');
+Route::get('tag/edit/{id}', [TagController::class,'edit'])->name('tag.edit')->middleware('CheckPermission:edit_tag');
+Route::post('tag/update', [TagController::class,'update'])->name('tag.update')->middleware('CheckPermission:update_tag');
+Route::get('tag/delete/{id}', [TagController::class,'destroy'])->name('tag.destroy')->middleware('CheckPermission:delete_tag');;
+
+
+Route::post('post/create', [PostController::class,'store'])->name('post.store')->middleware('CheckPermission:create_post');
+Route::get('post/list', [PostController::class,'index'])->name('post.view')->middleware('CheckPermission:list_post');
+Route::get('post/add', [PostController::class,'create'])->name('post.show')->middleware('CheckPermission:add_post');
+Route::get('post/delete/{id}', [PostController::class,'destroy'])->name('post.destroy')->middleware('CheckPermission:delete_post');
+Route::get('post/edit/{id}', [PostController::class,'edit'])->name('post.edit')->middleware('CheckPermission:edit_post');
+Route::post('posts/update', [PostController::class,'update'])->name('posts.update')->middleware('CheckPermission:update_post');
+
 
 
 Route::post('admin/create', [AdminController::class,'store'])->name('admin.store');
@@ -79,9 +77,33 @@ Route::get('role/delete/{id}', [RoleController::class,'destroy'])->name('role.de
 Route::post('role/check', [RoleController::class,'check'])->name('slug.check');
 Route::post('role/permission', [RoleController::class,'show'])->name('role.permission');
 
+ });
+
+Route::get('/logout', [LoginController::class,'logOut'])->name('logout');
+Route::post('/dashboard', [LoginController::class, 'authenticate'])->name('dashboard');
+
+Route::get('/', function () {
+    return view('login/login');
+});
+Route::get('/dashboard', function () {
+    return view('dashboard');
+});
+
 Route::get('/rol', function () {
     return view('role/form');
 });
+
+Route::get('/sites', function () {
+   
+    return view('site/register');
+});
+Route::get('/listingpost', function () {
+   
+    return view('site/list');
+});
+
+Route::post('/register', [UserController::class,'store'])->name('user.store');
+Route::post('/login', [UserController::class, 'authenticate'])->name('user.login');
 
 
 

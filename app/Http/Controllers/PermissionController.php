@@ -17,7 +17,7 @@ class PermissionController extends Controller
     public function index()
     {
 
-        $permission_data = PermissionModel::paginate(3);
+        $permission_data = PermissionModel::paginate(8);
         return view('permissions/list', compact('permission_data'));
     }
 
@@ -57,8 +57,8 @@ class PermissionController extends Controller
             }
         }
 
-
         $permission_data = $request->except(['_token']);
+        
 
         $permission_name =  $request->slug;
         $permission_name = str_replace('_', ' ', $permission_name);

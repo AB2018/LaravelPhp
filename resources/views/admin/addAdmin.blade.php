@@ -8,7 +8,7 @@
         <div class="box-header with-border">
             <h2 class="box-title">Add Admin</h2>
             <div class="box-tools pull-right">
-                <a class="btn btn-default">Cancel</a>
+                <a  href="{{route('admin.view')}}" class="btn btn-default">Cancel</a>
             </div>
         </div>
         <div class="box-body">
@@ -74,7 +74,7 @@
 
                     <div class="box-footer">
                         <button type="submit" class="btn btn-primary">Submit</button>
-                        <a href="" class="btn btn-default">Back</a>
+                        <a href="{{route('admin.view')}}" class="btn btn-default">Back</a>
                     </div>
                 </form>
 

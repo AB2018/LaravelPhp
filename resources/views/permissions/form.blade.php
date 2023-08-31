@@ -9,7 +9,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Add Permission</h3>
                         <div class="box-tools pull-right">
-                            <a href="" class="btn btn-default">Cancel</a>
+                            <a href="{{route('permission.view')}}" class="btn btn-default">Cancel</a>
                         </div>
                     </div>
                     <!-- /.box-header -->
@@ -41,52 +41,56 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="required">Name</label>
-                                        <input type="text" name="name" id="name"  class="form-control"
+                                        <input type="text" name="name" readonly id="name"  class="form-control"
                                             style="width: 100%;" value="{{ old('name', isset($crud) ? $crud->name : '') }}">
                                         @error('name')
                                             <p style="color:red">{{ $message }}</p>
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="required">Status</label>
-                                        <select class="form-control select2" name="status"
-                                            data-placeholder="Select a status">
-                                            <option>select</option>
+                            
+                            </div>
+                            <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="required">Status</label>
+                                    <select class="form-control select2" name="status"
+                                        data-placeholder="Select a status">
+                                        <option>select</option>
 
-                                            <option value="1"
-                                                {{ isset($crud) ? ($crud->status == '1' ? 'selected' : '') : '' }}>Active
-                                            </option>
-                                            <option value="0"
-                                                {{ isset($crud) ? ($crud->status == '0' ? 'selected' : '') : '' }}>Inactive
-                                            </option>
-                                        </select>
-                                        @error('status')
-                                            <p style="color:red">{{ $message }}</p>
-                                        @enderror
-                                    </div>
+                                        <option value="1"
+                                            {{ isset($crud) ? ($crud->status == '1' ? 'selected' : '') : '' }}>Active
+                                        </option>
+                                        <option value="0"
+                                            {{ isset($crud) ? ($crud->status == '0' ? 'selected' : '') : '' }}>Inactive
+                                        </option>
+                                    </select>
+                                    @error('status')
+                                        <p style="color:red">{{ $message }}</p>
+                                    @enderror
                                 </div>
                             </div>
+                        </div>
                             <!-- /.box-body -->
 
                             <div class="box-footer">
                                 <button type="submit" id="check" class="btn btn-primary">Submit</button>
-                                <a href="" class="btn btn-default">Back</a>
+                                <a href="{{route('permission.view')}}" class="btn btn-default">Back</a>
                             </div>
                             {{ @csrf_field() }}
                     </form>
                 </div>
-
+            
             </div>
         </div>
     </section>
 @endsection
 @section('js')
     <script src="{{ asset('plugins/jQuery/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('admin_asset/validation/permission.validation.js') }}"></script>
 
-    {{-- <script>
+    <script>
         var slugCheck = "{{ route('slug.check') }}";
         var token = "{{ csrf_token() }}";
-    </script> --}}
+    </script>
 @endsection

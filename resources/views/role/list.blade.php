@@ -92,11 +92,12 @@
                                             <div class="form-group">
                                                 <input type="hidden" name="role_id" id="role_id">
                                                 <label class="required">Permission</label>
-                                                </br>
+                                            </br>
+                                                
 
                                                 @foreach ($getPermission as $getPermission)
                                                     <input type="checkbox" id="permission_id" name="permission_id[]"
-                                                        class="permission-{{ $getPermission->id }}"
+                                                        class="permission permission-{{ $getPermission->id }}"
                                                         value="{{ $getPermission->id }}">
                                                     <label for="permission_id">{{ $getPermission->name }}</label><br>
                                                 @endforeach
@@ -119,17 +120,17 @@
     <script>
         $(document).ready(function() {
             var roleId = @json($roleId);
-            console.log("tfgfjg");
+          
             $(".permission-modal").click(function() {
+                $('.permission').removeAttr('checked');
                 var role_id = $(this).attr("data-role");
                 $("#role_id").val(role_id);
-                console.log(roleId);
+             
                 var permission = roleId[role_id];
                 console.log(permission);
                 $.each(permission, function(i, val) {
-                  console.log(val);
                   $(".permission-"+val).prop('checked',true);
-                  console.log($(".permission-"+val));
+               
                 });
 
 

@@ -25,7 +25,7 @@
   <div class="login-box-body">
     <p class="login-box-msg">Sign in to start your session</p>
 
-    <form  id="form" method="post" action="{{ route('login') }}" >
+    <form  id="form" method="post" action="{{ route('dashboard') }}" >
       @csrf
       <div class="form-group has-feedback">
         <input type="email" class="form-control" name="email" placeholder="Email">

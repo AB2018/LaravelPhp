@@ -11,7 +11,7 @@
             <div class="box-header with-border">
               <h3 class="box-title">Add Role</h3>
               <div class="box-tools pull-right">
-              <a href="" class="btn btn-default">Cancel</a>
+              <a href="{{route('role.view')}}" class="btn btn-default">Cancel</a>
               </div>
             </div>
             <!-- /.box-header -->
@@ -24,7 +24,7 @@
                         <div class="form-group">
                         <input type="hidden" name="id" value="{{ old('id', isset($crud) ? $crud->id : '') }}">
                             <label class="required">Slug</label>
-                            <input type="text" name="slug" id="slug" class="form-control" style="width: 100%;" value="{{ old('role', isset($crud) ? $crud->role : '') }}">
+                            <input type="text" name="slug" id="slug" class="form-control" style="width: 100%;" value="{{ old('slug', isset($crud) ? $crud->slug : '') }}">
                             <span id="availability"></span>
                             @if (\Session::has('slugExist'))
                                             <div  style="color:red">
@@ -41,7 +41,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="required">Role</label>
-                            <input type="text" name="role" id="role" readonly class="form-control" style="width: 100%;" value="{{ old('name', isset($crud) ? $crud->name : '') }}">
+                            <input type="text" name="role" id="role" readonly class="form-control" style="width: 100%;" value="{{ old('role', isset($crud) ? $crud->role : '') }}">
                             @error('role')
                             <p style="color:red">{{ $message }}</p>
                             @enderror
@@ -66,7 +66,7 @@
 
               <div class="box-footer">
                 <button type="submit" id="check" class="btn btn-primary">Submit</button>
-                <a href="" class="btn btn-default">Back</a>
+                <a href="{{route('role.view')}}" class="btn btn-default">Back</a>
               </div>
            
             </form>

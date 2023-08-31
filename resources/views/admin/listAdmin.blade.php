@@ -89,7 +89,7 @@
 
                                     @foreach ($getRole as $getRole)
                                         <input type="checkbox" id="role_id" name="role_id[]"
-                                            class="role-{{ $getRole->id }}"
+                                            class="role role-{{ $getRole->id }}"
                                             value="{{ $getRole->id }}">
                                         <label for="role_id">{{ $getRole->role }}</label><br>
                                     @endforeach
@@ -112,17 +112,14 @@
 <script>
   $(document).ready(function() {
       var roleId = @json($roleId);
-      console.log("tfgfjg");
       $(".role-modal").click(function() {
+        $('.role').removeAttr('checked');
           var role_id = $(this).attr("data-admin");
           $("#admin_id").val(role_id);
-          console.log(roleId);
           var permission = roleId[role_id];
           console.log(permission);
           $.each(permission, function(i, val) {
-            console.log(val);
             $(".role-"+val).prop('checked',true);
-            console.log($(".role-"+val));
           });
 
 

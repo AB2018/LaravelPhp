@@ -19,7 +19,7 @@
           <div class="box-body">
             <div class="form-group">
               <label for="category_name">Category Name</label>
-              <input type="text" class="form-control" name="category_name" id="category_name" placeholder="Enter Category Name">
+              <input type="text" class="form-control" name="category_name" id="category_name" style="width: 50%" placeholder="Enter Category Name">
               @error('category_name')
                 <p style="color:red">{{ $message }}</p>
                 @enderror

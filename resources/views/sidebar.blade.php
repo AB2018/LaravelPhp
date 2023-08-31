@@ -7,7 +7,8 @@
         <img src="{{asset('img/user2-160x160.jpg')}}" class="img-circle" alt="User Image">
       </div>
       <div class="pull-left info">
-        <p>Alexander Pierce</p>
+        
+        <p> {{ Auth()->user()->name }}</p>
         <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
       </div>
     </div>
@@ -23,6 +24,24 @@
     </form>
     <!-- /.search form -->
     <!-- sidebar menu: : style can be found in sidebar.less -->
+
+   
+    <ul class="sidebar-menu">
+      <li class="header">MAIN NAVIGATION </li>
+      @php
+      $active1 = '';
+      $route =request()->route()->getName();
+      if($route == 'dashboard'){
+           $active1 = 'active';
+      }
+      @endphp
+      <li class="treeview {{$active1}}">
+        <a href="{{route('dashboard')}}">
+          <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+        </a>
+      </li>
+    
+  
     @php
     $active1 = '';
     $route =request()->route()->getName();
@@ -30,8 +49,7 @@
          $active1 = 'active';
     }
     @endphp
-    <ul class="sidebar-menu">
-      <li class="header">MAIN NAVIGATION </li>
+    @if (checkSlug('add_category') == true || checkSlug('list_category') == true)
       <li class="treeview {{$active1}}">
         <a href="#">
           <i class="fa fa-dashboard"></i> <span>Category</span>
@@ -40,10 +58,16 @@
           </span>
         </a>
         <ul class="treeview-menu">
+          @if (checkSlug('add_category') == true )
           <li class="{{($route == 'category.show') ? 'active' : '' }}"><a href="{{route('category.show')}}" ><i class="fa fa-circle-o"></i> Add Category</a></li>
+         @endif
+         
+         @if (checkSlug('list_category') == true )
           <li class="{{($route == 'category.view') ? 'active' : '' }}"><a href="{{route('category.view')}}"><i class="fa fa-circle-o"></i> List Category</a></li>
+          @endif
         </ul>
       </li>
+      @endif
 
 
       @php
@@ -52,7 +76,7 @@
       $active1 = 'active';
       }
       @endphp
-
+   @if(checkSlug('add_tag') == true || checkSlug('list_tag') == true)
       <li class="treeview {{$active1}}">
         <a href="#">
           <i class="fa fa-dashboard"></i> <span>Tag</span>
@@ -61,10 +85,16 @@
           </span>
         </a>
         <ul class="treeview-menu">
+          @if (checkSlug('add_tag') == true)
           <li class="{{($route == 'tag.show') ? 'active' : '' }}"><a href="{{route('tag.show')}}"><i class="fa fa-circle-o"></i> Add Tag</a></li>
+         @endif
+         @if (checkSlug('list_tag') == true)
           <li class="{{($route == 'tag.view') ? 'active' : '' }}"><a href="{{route('tag.view')}}"><i class="fa fa-circle-o"></i> List Tag</a></li>
+        @endif
         </ul>
       </li>
+@endif
+
       @php
     $active1 = '';
     $route =request()->route()->getName();
@@ -72,6 +102,7 @@
          $active1 = 'active';
     }
     @endphp
+      @if(checkSlug('add_post') == true || checkSlug('list_post') == true)
       <li class="treeview {{$active1}}">
         <a href="#">
           <i class="fa fa-dashboard"></i> <span>Post</span>
@@ -80,11 +111,17 @@
           </span>
         </a>
         <ul class="treeview-menu">
+          @if(checkSlug('add_post') == true)
           <li class="{{($route == 'post.show') ? 'active' : '' }}"><a href="{{route('post.show')}}"><i class="fa fa-circle-o"></i> Add Post</a></li>
+         @endif
+         @if(checkSlug('list_post') == true )
           <li class="{{($route == 'post.view') ? 'active' : '' }}"><a href="{{route('post.view')}}"><i class="fa fa-circle-o"></i> List Post</a></li>
+        @endif
         </ul>
       </li>
+      @endif
       @php
+     
     $active1 = '';
     $route =request()->route()->getName();
     if($route == 'admin.view' || $route == 'admin.show'){
@@ -118,8 +155,8 @@
           </span>
         </a>
         <ul class="treeview-menu">
-          <li class="{{($route == 'permission.add') ? 'active' : '' }}"><a href="{{route('permission.add')}}"><i class="fa fa-circle-o"></i> Add Admin</a></li>
-          <li class="{{($route == 'permission.view') ? 'active' : '' }}"><a href="{{route('permission.view')}}"><i class="fa fa-circle-o"></i> List Admin</a></li>
+          <li class="{{($route == 'permission.add') ? 'active' : '' }}"><a href="{{route('permission.add')}}"><i class="fa fa-circle-o"></i> Add Permission</a></li>
+          <li class="{{($route == 'permission.view') ? 'active' : '' }}"><a href="{{route('permission.view')}}"><i class="fa fa-circle-o"></i> List Permission</a></li>
         </ul>
       </li>
       @php

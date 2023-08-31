@@ -19,6 +19,7 @@ class AdminController extends Controller
     public function index()
     
     {
+        //dd(session()->get('user.permission'));
         $getRole = RoleModel::all();
         $admin_data = AdminModel::with('roles')->paginate(3);
      

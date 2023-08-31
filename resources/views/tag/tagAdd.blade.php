@@ -21,7 +21,7 @@
               <div class="box-body">
                 <div class="form-group">
                   <label for="tag_name">Tag Name</label>
-                  <input type="text" class="form-control" name="tag_name" id="tag_name" placeholder="Enter tag Name">
+                  <input type="text" class="form-control" name="tag_name" style="width: 50%"  id="tag_name" placeholder="Enter tag Name">
       
                 </div>
                 @error('tag_name')

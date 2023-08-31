@@ -29,6 +29,7 @@ class CrudController extends Controller
     public function create()
     {
 
+    //    dd(request()->route()->getName());
         return view('category/add');
     }
 

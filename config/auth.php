@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'uservalidate' => [
+            'driver' => 'session',
+            'provider' => 'uservalidates',
+        ],
     ],
 
     /*
@@ -63,6 +67,10 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\AdminModel::class,
+        ],
+        'uservalidates' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\UserModel::class,
         ],
 
         // 'users' => [
@@ -89,6 +97,12 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'uservalidates' => [
+            'provider' => 'uservalidates',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
