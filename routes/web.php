@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ArrayController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CrudController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PostController;
@@ -47,7 +48,7 @@ Route::get('post/list', [PostController::class,'index'])->name('post.view')->mid
 Route::get('post/add', [PostController::class,'create'])->name('post.show')->middleware('CheckPermission:add_post');
 Route::get('post/delete/{id}', [PostController::class,'destroy'])->name('post.destroy')->middleware('CheckPermission:delete_post');
 Route::get('post/edit/{id}', [PostController::class,'edit'])->name('post.edit')->middleware('CheckPermission:edit_post');
-Route::post('posts/update', [PostController::class,'update'])->name('posts.update')->middleware('CheckPermission:update_post');
+Route::post('posts/update', [PostController::class,'update'])->name('posts.update')->middleware('CheckPermission:edit_post');
 
 
 
@@ -82,7 +83,7 @@ Route::post('role/permission', [RoleController::class,'show'])->name('role.permi
 Route::get('/logout', [LoginController::class,'logOut'])->name('logout');
 Route::post('/dashboard', [LoginController::class, 'authenticate'])->name('dashboard');
 
-Route::get('/', function () {
+Route::get('/log', function () {
     return view('login/login');
 });
 Route::get('/dashboard', function () {
@@ -102,8 +103,18 @@ Route::get('/listingpost', function () {
     return view('site/list');
 });
 
+// Route::get('/', function () {
+   
+//     return view('site/home');
+// });
+
 Route::post('/register', [UserController::class,'store'])->name('user.store');
 Route::post('/login', [UserController::class, 'authenticate'])->name('user.login');
+Route::get('/', [HomeController::class,'index'])->name('home');
+Route::get('/post/details/{id}', [HomeController::class,'show'])->name('post.details');
+Route::get('/user/register', [HomeController::class,'register'])->name('user.register');
+Route::get('/user/logout', [SiteController::class,'logOut'])->name('user.logout');
+Route::get('/user/profile', [UserController::class,'show'])->name('user.profile');
 
 
 

@@ -185,7 +185,7 @@ class PostController extends Controller
     public function update(Request $request)
     {
         
-       //dd($request->all());
+     //  dd($request->all());
         $id = $request->id;
       
         $crud = PostModel::find($id);

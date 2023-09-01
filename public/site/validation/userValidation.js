@@ -22,35 +22,3 @@ $('#userForm').validate({
 
 
 });
-
-$('#login').click(function () {
-    console.log("hkgkj");
-    var email = $('#emailcheck').val();
-    var password = $('#passwordcheck').val();
-    console.log(email);
-
-$.ajax({
-    method:"POST",	
-    url:loginCheck,
-
-    data:{
-        'email':email,
-        "password": password,
-        "_token": token,
-    },
-  
-    success:function(result)
-    {if(result == 'success')
-    {
-        window.location.reload();
-    }
-    else
-    {
-     $('#availability').html('<label class="text-danger">Username password not match</label>');
-    }
-    }
-   })
-
-   
-   
-});

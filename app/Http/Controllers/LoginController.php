@@ -28,8 +28,9 @@ class LoginController extends Controller
         //$hashedPassword = Hash::make($request->password);
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            //dd($user);  
+           
             $user_role = Auth()->user();
+           
             $user_data=[
                 'id' => $user_role->id ,
                 'name' =>  $user_role->name ,

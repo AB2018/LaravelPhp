@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\UserModel;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
-use Nette\Utils\Json;
 
-class UserController extends Controller
+class SiteController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,7 +17,6 @@ class UserController extends Controller
     {
         //
     }
-
     public function authenticate(Request $request)
     {
 
@@ -32,13 +27,20 @@ class UserController extends Controller
 
      
         //$hashedPassword = Hash::make($request->password);
-        if (Auth::guard('uservalidate')->attempt($credentials)) { 
-           
+        if (Auth::guard('uservalidate')->attempt($credentials)) {
+        
             $success = 'success';
-            return Response::json($success);      
+            return Response::json($success);
+          
+            
         }
         $fail = 'Email or password not match';
         return Response::json($fail);
+    }
+    public function logOut(Request $request){
+        Auth::logout();
+        $request->session()->flush();
+        return redirect('/');
     }
 
 
@@ -60,33 +62,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-       
-        $id = $request->id;
-        $request->validate([
-            'name' => 'required',
-            'contact' => 'required',
-            'email' => 'required',
-            'password' => 'required',
-        ]);    
-        $hashedPassword = Hash::make($request->password);
-          $user_data = [
-                'name' => $request->name,
-                'contact' => $request->contact,     
-                'email' => $request->email,
-                'password' => $hashedPassword,
-            ];       
-        
-        if( $request->id){
-           
-            $id = $request->id;
-            UserModel::where('id', $id)
-            ->update($user_data);
-          
-        } else {
-           
-            $userModel = UserModel::create($user_data);
-        }
-        return redirect()->route('admin.view');
+        //
     }
 
     /**
@@ -95,9 +71,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show($id)
     {
-        return view('site/profile');
+        //
     }
 
     /**

@@ -25,16 +25,15 @@
     <!-- /.search form -->
     <!-- sidebar menu: : style can be found in sidebar.less -->
 
-   
+    @php
+    $active1 = '';
+    $route =request()->route()->getName();
+    if($route == 'dashboard'){
+         $active1 = 'active';
+    }
+    @endphp
     <ul class="sidebar-menu">
       <li class="header">MAIN NAVIGATION </li>
-      @php
-      $active1 = '';
-      $route =request()->route()->getName();
-      if($route == 'dashboard'){
-           $active1 = 'active';
-      }
-      @endphp
       <li class="treeview {{$active1}}">
         <a href="{{route('dashboard')}}">
           <i class="fa fa-dashboard"></i> <span>Dashboard</span>
