@@ -55,6 +55,7 @@ class PermissionController extends Controller
 
                 return redirect()->back()->with('slugExist', 'Slug Already exist');
             }
+           
         }
 
         $permission_data = $request->except(['_token']);

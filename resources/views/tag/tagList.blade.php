@@ -7,10 +7,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Tag List</h3>
                         <div class="box-tools pull-right">
-                            
-                                <a href="{{ route('tag.show') }}" class="btn btn-primary">Add Tag</a>
-                            
-
+                            <a href="{{ route('tag.show') }}" class="btn btn-primary">Add Tag</a>
                         </div>
                     </div>
                     <div class="box-body">
@@ -31,8 +28,8 @@
                                     <tr>
                                         <td>{{ $crud->id }}</td>
                                         <td>{{ $crud->tag_Name }}</td>
-                                        <td>{{ $crud->created_at }}</td>
-                                        <td>{{ $crud->updated_at }}</td>
+                                        <td>{{ dateFormat($crud->created_at) }}</td>
+                                        <td>{{ dateFormat($crud->updated_at) }}</td>
                                         @if (checkSlug('edit_tag') == true || checkSlug('delete_tag') == true)
                                             <td>
                                                 @if (checkSlug('edit_tag') == true)
@@ -60,5 +57,4 @@
 
 
     </section>
-    
 @endsection

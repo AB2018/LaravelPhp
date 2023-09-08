@@ -51,8 +51,17 @@
                 <div class="row control-group">
                     <div class="form-group col-xs-12 floating-label-form-group controls">
                      
-                        <input type="text" class="form-control" placeholder="Password" id="password" name="password" >
+                        <input type="password" class="form-control" placeholder="Password" id="password" name="password" >
                         @error('password')
+                        <p style="color:red">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+                <div class="row control-group">
+                    <div class="form-group col-xs-12 floating-label-form-group controls">
+                     
+                        <input type="password" class="form-control" placeholder="cconfirm password" id="cpassword" name="cpassword" >
+                        @error('cpassword')
                         <p style="color:red">{{ $message }}</p>
                         @enderror
                     </div>

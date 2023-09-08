@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PostModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
@@ -24,20 +25,19 @@ class SiteController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
+        
 
-     
         //$hashedPassword = Hash::make($request->password);
         if (Auth::guard('uservalidate')->attempt($credentials)) {
-        
+
             $success = 'success';
             return Response::json($success);
-          
-            
         }
         $fail = 'Email or password not match';
         return Response::json($fail);
     }
-    public function logOut(Request $request){
+    public function logOut(Request $request)
+    {
         Auth::logout();
         $request->session()->flush();
         return redirect('/');
@@ -96,7 +96,11 @@ class SiteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $checkPublished = $request->get('status');
+        dd($checkPublished);
+        $id = $request->id;
+        PostModel::where('id', $id)
+            ->update('status',$checkPublished);
     }
 
     /**

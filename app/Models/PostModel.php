@@ -22,4 +22,13 @@ class PostModel extends Model
     {
         return $this->belongsToMany('App\Models\TagModel','post_tag','post_id','tag_id');
     }
+    public function admin_post(){
+        return $this->hasMany('App\Models\AdminModel','id','posted_by_admin');
+    }
+    public function usercheck_post(){
+        
+        return $this->hasMany('App\Models\UserModel','id','posted_by');
+   }
+    
+   
 }

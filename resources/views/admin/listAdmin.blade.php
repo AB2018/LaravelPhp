@@ -31,7 +31,7 @@
               @endphp
               @foreach($admin_data as $crud)
               <tr>
-                <td>{{$crud->id}}</td>
+                <td>{{ $no++ }}</td>
                 <td>{{$crud->name}}</td>
                 <td>{{$crud->contact}}</td>
                 <td>{{$crud->status}}</td>

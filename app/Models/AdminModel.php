@@ -15,4 +15,7 @@ class AdminModel extends Authenticatable
     {
         return $this->belongsToMany('App\Models\RoleModel','admin_roles','admin_id','role_id');
     }
+
+
+   
 }

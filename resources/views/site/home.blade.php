@@ -21,20 +21,36 @@
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <div class="post-preview">
-                @foreach($cruds as $crud)
-                <a href="{{ route('post.details', ['id' => $crud->id]) }}">
-                   
+          
+                @foreach($post_data as $crud)
+                @if(!(empty($crud['admin_post'])))
+                <a href="{{ route('post.details', ['id' => $crud['id']]) }}">
+                  
                     <h2 class="post-title">
-                        {{$crud->title}}
+                        {{$crud['title']}}
                     </h2>
                     <h3 class="post-subtitle">
-                        {{$crud->subtitle}}
+                        {{$crud['subtitle']}}
                     </h3>
-                
                 </a>
-                <p class="post-meta">Posted by <a href="#">Start Bootstrap</a> {{ \Carbon\Carbon::parse($crud->created_at)->format("F j, Y")}}</p>
+                <p class="post-meta">Posted by <a href="#">{{$crud['admin_post'][0]['name']}}</a> {{ \Carbon\Carbon::parse($crud['created_at'])->format("F j, Y")}}</p>
                 <hr>
-                @endforeach
+                @endif
+                @if(empty($crud['admin_post']))
+                <a href="{{ route('post.details', ['id' => $crud['id']]) }}">
+                  
+                    <h2 class="post-title">
+                        {{$crud['title']}}
+                    </h2>
+                    <h3 class="post-subtitle">
+                        {{$crud['subtitle']}}
+                    </h3>
+                </a>
+              
+                <p class="post-meta">Posted by <a href="#">{{$crud['usercheck_post'][0]['name']}}</a> {{ \Carbon\Carbon::parse($crud['created_at'])->format("F j, Y")}}</p>
+                <hr>
+                @endif
+                @endforeach         
             </div>
           
           

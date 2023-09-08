@@ -53,8 +53,8 @@
                                 <select class="form-control select2" name="status" data-placeholder="Select a status"  >
                                     <option >select</option>
                                
-                                    <option value="1" {{ isset($crud)? ($crud->status == '1'? 'selected': '') : '' }} >Active</option>
-                                    <option value="0" {{ isset($crud)? ($crud->status == '0'? 'selected': '') : '' }}>Inactive</option>
+                                    <option value="Active" {{ isset($crud)? ($crud->status == 'Active'? 'selected': '') : '' }} >Active</option>
+                                    <option value="Inactive" {{ isset($crud)? ($crud->status == 'Inactive'? 'selected': '') : '' }}>Inactive</option>
                                 </select>
                                 @error('status')
                                 <p style="color:red">{{ $message }}</p>

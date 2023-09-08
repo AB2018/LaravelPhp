@@ -12,6 +12,8 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserPostController;
+use App\Models\AdminModel;
 use App\Models\RoleModel;
 
 
@@ -43,9 +45,9 @@ Route::post('tag/update', [TagController::class,'update'])->name('tag.update')->
 Route::get('tag/delete/{id}', [TagController::class,'destroy'])->name('tag.destroy')->middleware('CheckPermission:delete_tag');;
 
 
-Route::post('post/create', [PostController::class,'store'])->name('post.store')->middleware('CheckPermission:create_post');
+Route::post('post/create', [PostController::class,'store'])->name('post.store')->middleware('CheckPermission:add_post');
 Route::get('post/list', [PostController::class,'index'])->name('post.view')->middleware('CheckPermission:list_post');
-Route::get('post/add', [PostController::class,'create'])->name('post.show')->middleware('CheckPermission:add_post');
+Route::get('post/add', [PostController::class,'create'])->name('post.show');
 Route::get('post/delete/{id}', [PostController::class,'destroy'])->name('post.destroy')->middleware('CheckPermission:delete_post');
 Route::get('post/edit/{id}', [PostController::class,'edit'])->name('post.edit')->middleware('CheckPermission:edit_post');
 Route::post('posts/update', [PostController::class,'update'])->name('posts.update')->middleware('CheckPermission:edit_post');
@@ -115,6 +117,65 @@ Route::get('/post/details/{id}', [HomeController::class,'show'])->name('post.det
 Route::get('/user/register', [HomeController::class,'register'])->name('user.register');
 Route::get('/user/logout', [SiteController::class,'logOut'])->name('user.logout');
 Route::get('/user/profile', [UserController::class,'show'])->name('user.profile');
+Route::post('/store/profile', [UserController::class,'create'])->name('store.profile');
+Route::get('/user/post', [UserPostController::class,'show'])->name('user.post');
+Route::post('post/user/store', [UserPostController::class,'store'])->name('userPost.store');
+Route::get('/user/post/add', [UserPostController::class,'create'])->name('add.userPost');
+Route::post('post/published', [SiteController::class,'update'])->name('post.published');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Route::get('/user/edit', [PostController::class,'edit'])->name('profession.edit');
+//Route::get('user/post/add', [PostController::class,'create'])->name('user.post');
+
+
 
 
 

@@ -30,8 +30,8 @@
                                     <tr>
                                         <td>{{ $crud->id }}</td>
                                         <td>{{ $crud->name }}</td>
-                                        <td>{{ $crud->created_at }}</td>
-                                        <td>{{ $crud->updated_at }}</td>
+                                        <td>{{dateFormat($crud->created_at) }}</td>
+                                        <td>{{ dateFormat($crud->updated_at)}}</td>
                                         @if (checkSlug('edit_category') == true || checkSlug('delete_category') == true)
                                         <td>
                                           @if(checkSlug('edit_category') == true )

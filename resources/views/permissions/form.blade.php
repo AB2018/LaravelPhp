@@ -9,7 +9,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Add Permission</h3>
                         <div class="box-tools pull-right">
-                            <a href="{{route('permission.view')}}" class="btn btn-default">Cancel</a>
+                            <a href="{{ route('permission.view') }}" class="btn btn-default">Cancel</a>
                         </div>
                     </div>
                     <!-- /.box-header -->
@@ -27,7 +27,7 @@
                                             style="width: 100%;" value="{{ old('slug', isset($crud) ? $crud->slug : '') }}">
                                         <span id="availability"></span>
                                         @if (\Session::has('slugExist'))
-                                            <div  style="color:red">
+                                            <div style="color:red">
                                                 <ul>
                                                     <li>{!! \Session::get('slugExist') !!}</li>
                                                 </ul>
@@ -41,46 +41,46 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="required">Name</label>
-                                        <input type="text" name="name" readonly id="name"  class="form-control"
+                                        <input type="text" name="name" readonly id="name" class="form-control"
                                             style="width: 100%;" value="{{ old('name', isset($crud) ? $crud->name : '') }}">
                                         @error('name')
                                             <p style="color:red">{{ $message }}</p>
                                         @enderror
                                     </div>
                                 </div>
-                            
-                            </div>
-                            <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="required">Status</label>
-                                    <select class="form-control select2" name="status"
-                                        data-placeholder="Select a status">
-                                        <option>select</option>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="required">Status</label>
+                                        <select class="form-control select2" id="status" name="status"
+                                            data-placeholder="Select a status">
+                                            <option>select</option>
 
-                                        <option value="1"
-                                            {{ isset($crud) ? ($crud->status == '1' ? 'selected' : '') : '' }}>Active
-                                        </option>
-                                        <option value="0"
-                                            {{ isset($crud) ? ($crud->status == '0' ? 'selected' : '') : '' }}>Inactive
-                                        </option>
-                                    </select>
-                                    @error('status')
-                                        <p style="color:red">{{ $message }}</p>
-                                    @enderror
+                                            <option value="Active"
+                                                {{ isset($crud) ? ($crud->status == 'Active' ? 'selected' : '') : '' }}>
+                                                Active
+                                            </option>
+                                            <option value="Inactive"
+                                                {{ isset($crud) ? ($crud->status == 'Inactive' ? 'selected' : '') : '' }}>
+                                                Inactive
+                                            </option>
+                                        </select>
+                                        @error('status')
+                                            <p style="color:red">{{ $message }}</p>
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                            <!-- /.box-body -->
+                        <!-- /.box-body -->
 
-                            <div class="box-footer">
-                                <button type="submit" id="check" class="btn btn-primary">Submit</button>
-                                <a href="{{route('permission.view')}}" class="btn btn-default">Back</a>
-                            </div>
-                            {{ @csrf_field() }}
+                        <div class="box-footer">
+                            <button type="submit" id="check" class="btn btn-primary">Submit</button>
+                            <a href="{{ route('permission.view') }}" class="btn btn-default">Back</a>
+                        </div>
+                        {{ @csrf_field() }}
                     </form>
                 </div>
-            
+
             </div>
         </div>
     </section>

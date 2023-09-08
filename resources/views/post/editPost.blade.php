@@ -77,13 +77,20 @@
                             <p style="color:red">{{ $message }}</p>
                             @enderror
                         </div>
-                        <div class="form-group">
-                            <label>Status</label>
-                            <input type="text" name="status" class="form-control" value="{{$crud->status}}" style="width: 100%;">
-                            @error('status')
-                            <p style="color:red">{{ $message }}</p>
-                            @enderror
-                        </div>
+                      
+                            <div class="form-group">
+                                <label class="required">Status</label>
+                                <select class="form-control select2" name="status" data-placeholder="Select a status"  >
+                                    <option >select</option>
+                               
+                                    <option value="Published" {{ isset($crud)? ($crud->status == 'Published'? 'selected': '') : '' }} >Published</option>
+                                    <option value="Not Published" {{ isset($crud)? ($crud->status == 'Not Published'? 'selected': '') : '' }}>Not Published</option>
+                                </select>
+                                @error('status')
+                                <p style="color:red">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">

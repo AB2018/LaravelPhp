@@ -12,4 +12,7 @@ class UserModel extends Authenticatable
     protected $table = 'user';
     protected $guarded = [];
     use HasFactory;
+
+ 
+  
 }

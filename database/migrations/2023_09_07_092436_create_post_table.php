@@ -20,6 +20,7 @@ class CreatePostTable extends Migration
             $table->string('subtitle');
             $table->string('photo');
             $table->string('posted_by')->nullable();
+            $table->string('posted_by_admin')->nullable();
             $table->string('body');
             $table->timestamps();
         });
@@ -32,6 +33,6 @@ class CreatePostTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('_post');
+        Schema::dropIfExists('post');
     }
 }

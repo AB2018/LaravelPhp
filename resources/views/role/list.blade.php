@@ -31,6 +31,7 @@
                               $roleId = [];
                              
                               @endphp
+                            
                                 @foreach ($role_data as $crud)
                                     <tr>
                                         <td>{{ $crud->id }}</td>

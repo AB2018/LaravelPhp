@@ -10,8 +10,9 @@ function checkSlug($slug)
     if (session()->has('user')) {
         //dd('call');
         $value = session()->get('user.permission');
-      //  dd($slug);
+     // dd($value);
         if (in_array($slug, $value)) {
+         //   dd("hhh");
             return true;
         } else {
             return false;
@@ -20,4 +21,10 @@ function checkSlug($slug)
         // return $exists;  
     }
     return false;
+}
+
+function dateFormat($date){
+    
+  return  \Carbon\Carbon::parse($date)->format("d-m-Y");
+
 }

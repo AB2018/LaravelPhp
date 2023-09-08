@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PostModel;
+use App\Models\User;
 use App\Models\UserModel;
 
 use Illuminate\Http\Request;
@@ -19,7 +21,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $id = Auth::guard('uservalidate')->user()->id;
+        
+        $cruds = UserModel::find($id)->get()->toArray();
+        //dd($cruds);
+
+        return view('/site/profile', compact('cruds'));
     }
 
     public function authenticate(Request $request)
@@ -47,9 +54,23 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+      //  dd($request->all());
+        
+        $profile = $request->validate([
+            'profession' => ['required'],
+            'description' => ['required'],
+        ]);
+       $id = Auth::guard('uservalidate')->user()->id;
+        UserModel::where('id', $id)
+        ->update($profile);
+        $success = 'success';
+        return Response::json($success); 
+        
+
+        //$roleModel = UserModel::create($profession);
+
     }
 
     /**
@@ -60,13 +81,14 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-       
+      
         $id = $request->id;
         $request->validate([
             'name' => 'required',
             'contact' => 'required',
             'email' => 'required',
-            'password' => 'required',
+            'password' => 'required|min:6|confirmed',
+            'cpassword_' => 'required|min:6'
         ]);    
         $hashedPassword = Hash::make($request->password);
           $user_data = [
@@ -75,17 +97,8 @@ class UserController extends Controller
                 'email' => $request->email,
                 'password' => $hashedPassword,
             ];       
-        
-        if( $request->id){
-           
-            $id = $request->id;
-            UserModel::where('id', $id)
-            ->update($user_data);
-          
-        } else {
-           
+         
             $userModel = UserModel::create($user_data);
-        }
         return redirect()->route('admin.view');
     }
 
@@ -97,7 +110,11 @@ class UserController extends Controller
      */
     public function show()
     {
-        return view('site/profile');
+        $id = Auth::guard('uservalidate')->user()->id;
+     
+         $crud = UserModel::find($id);
+     
+        return view('site/profile',compact('crud'));
     }
 
     /**
@@ -108,7 +125,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+    //     $crud = User::find($id);
+    //    dd($crud);
+    //     return view('site/profile', compact('crud'));
     }
 
     /**

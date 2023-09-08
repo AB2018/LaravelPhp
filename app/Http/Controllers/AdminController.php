@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AdminModel;
 use App\Models\AdminRoles;
+use App\Models\PostModel;
 use App\Models\RoleModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -19,11 +20,13 @@ class AdminController extends Controller
     public function index()
     
     {
+        // $cruds = PostModel::with('admin_post');
+        // // dd($cruds);
         //dd(session()->get('user.permission'));
         $getRole = RoleModel::all();
-        $admin_data = AdminModel::with('roles')->paginate(3);
+        $admin_data = AdminModel::with('roles')->paginate(10);
      
-        return view('admin/listAdmin', compact('admin_data','getRole'));
+        return view('admin/listAdmin', compact('admin_data','getRole'))->with('no', 1);
     }
 
     /**
@@ -138,8 +141,15 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, AdminModel $adminModel)
+    public function update(Request $request)
     {
+        $post_published = [
+            'status' => $request->status,   
+        ];   
+        $id = $request->id;
+        PostModel::where('id', $id)
+        ->update($post_published);    
+    
 
        
     }

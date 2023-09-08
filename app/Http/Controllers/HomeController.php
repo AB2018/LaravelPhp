@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdminModel;
 use App\Models\PostModel;
+use App\Models\UserModel;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -14,8 +16,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $cruds = PostModel::paginate(3);
-        return view('site/home', compact('cruds'));
+      //  $crud_user = PostModel::with('usercheck_post')->get()->toArray();
+        $post_data = PostModel::with('admin_post','usercheck_post')->where('status','=','Published')->get()->toArray();
+      
+       
+      //  $admin_name = PostModel::with('admin_post')->get()->toArray();
+        return view('site/home', compact('post_data'));
     }
 
     /**

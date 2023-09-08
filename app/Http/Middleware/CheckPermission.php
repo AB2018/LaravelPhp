@@ -17,6 +17,7 @@ class CheckPermission
     public function handle(Request $request, Closure $next,$slug)
     {
         if(checkSlug($slug)==false){
+         
             abort(404);
         }
       

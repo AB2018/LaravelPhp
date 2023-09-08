@@ -11,12 +11,10 @@ $('#form').validate({
 		status: "required",
 
 	}, messages: {
-		role: "Please enter me",
+		role: "Please enter name",
 		status: "Please select status",
 
 	},
-
-
 });
 
 $.validator.addMethod("validateRole", function (value, element) {
