@@ -10,7 +10,7 @@ function checkSlug($slug)
     if (session()->has('user')) {
         //dd('call');
         $value = session()->get('user.permission');
-     // dd($value);
+       //dd($value,$slug);
         if (in_array($slug, $value)) {
          //   dd("hhh");
             return true;

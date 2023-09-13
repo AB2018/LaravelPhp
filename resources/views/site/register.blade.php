@@ -60,8 +60,8 @@
                 <div class="row control-group">
                     <div class="form-group col-xs-12 floating-label-form-group controls">
                      
-                        <input type="password" class="form-control" placeholder="cconfirm password" id="cpassword" name="cpassword" >
-                        @error('cpassword')
+                        <input type="password" class="form-control" placeholder="confirm password" id="password_confirmation" name="password_confirmation" >
+                        @error('password_confirmation')
                         <p style="color:red">{{ $message }}</p>
                         @enderror
                     </div>

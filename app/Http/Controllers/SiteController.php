@@ -25,7 +25,7 @@ class SiteController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
-        
+
 
         //$hashedPassword = Hash::make($request->password);
         if (Auth::guard('uservalidate')->attempt($credentials)) {

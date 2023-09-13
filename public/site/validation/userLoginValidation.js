@@ -1,19 +1,19 @@
 
-$('#userLogin').validate({
-	ignore: '',
-	rules: {
-        email : {
-            required :true,
-            email: true,
-        },
-        password : "required",
+// $('#userLogin').validate({
+// 	ignore: '',
+// 	rules: {
+//         email : {
+//             required :true,
+//             email: true,
+//         },
+//         password : "required",
 
-	}, messages: {
+// 	}, messages: {
 
-        email: "Please enter email",
-        password: "Please enter your password",
+//         email: "Please enter email",
+//         password: "Please enter your password",
 	
-	},
+// 	},
 
 
-});
+// });

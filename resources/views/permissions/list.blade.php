@@ -23,9 +23,9 @@
               </tr>
             </thead>
             <tbody>
-              @foreach($permission_data as $crud)
+              @foreach($permission_data as $index => $crud)
               <tr>
-                <td>{{$crud->id}}</td>
+                <td>{{$index + $permission_data->firstItem()}} </td>
                 <td>{{$crud->slug}}</td>
                 <td>{{$crud->name}}</td>
                 <td>{{$crud->status}}</td>

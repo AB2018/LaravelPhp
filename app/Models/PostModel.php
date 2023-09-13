@@ -17,6 +17,10 @@ class PostModel extends Model
     public function post_category(){
         return $this->hasMany('App\Models\PostCategoryModel','post_id');
     }
+    public function category()
+    {
+        return $this->hasMany('App\Models\PostCategoryModel','id','post_id');
+    }
 
     public function tag()
     {

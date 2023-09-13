@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Crud extends Model
 {
     use HasFactory;
-    protected $table = 'flights';
+    protected $table = 'category';
     protected $fillable = ['name',];
+
+    public function post()
+    {
+        return $this->belongsToMany('App\Models\PostModel','post_category','category_id','post_id');
+    }
 }

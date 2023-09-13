@@ -32,9 +32,9 @@
                              
                               @endphp
                             
-                                @foreach ($role_data as $crud)
+                                @foreach ($role_data as $index => $crud)
                                     <tr>
-                                        <td>{{ $crud->id }}</td>
+                                        <td>{{$index + $role_data->firstItem()}} </td>
                                         <td>{{ $crud->slug }}</td>
                                         <td>{{ $crud->role }}</td>
                                         <td>{{ $crud->status }}</td>

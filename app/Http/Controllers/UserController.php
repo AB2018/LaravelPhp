@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Session;
 use Nette\Utils\Json;
 
 class UserController extends Controller
@@ -21,16 +22,15 @@ class UserController extends Controller
      */
     public function index()
     {
-        $id = Auth::guard('uservalidate')->user()->id;
-        
+        $id = Auth::guard('uservalidate')->user()->id;   
         $cruds = UserModel::find($id)->get()->toArray();
-        //dd($cruds);
-
         return view('/site/profile', compact('cruds'));
     }
 
+
     public function authenticate(Request $request)
     {
+       
 
         $credentials = $request->validate([
             'email' => ['required', 'email'],
@@ -40,12 +40,20 @@ class UserController extends Controller
      
         //$hashedPassword = Hash::make($request->password);
         if (Auth::guard('uservalidate')->attempt($credentials)) { 
-           
+
+            $id = Auth::guard('uservalidate')->user()->id;
+            $countPost = PostModel::with('usercheck_post')->where('posted_by','=',$id)->count();
+            Session::put('postCount', $countPost);
+
             $success = 'success';
-            return Response::json($success);      
+            return Response::json($success);  
+            
         }
         $fail = 'Email or password not match';
         return Response::json($fail);
+        $id = Auth::guard('uservalidate')->user()->id;
+      
+       
     }
 
 
@@ -62,6 +70,7 @@ class UserController extends Controller
             'profession' => ['required'],
             'description' => ['required'],
         ]);
+
        $id = Auth::guard('uservalidate')->user()->id;
         UserModel::where('id', $id)
         ->update($profile);
@@ -87,8 +96,8 @@ class UserController extends Controller
             'name' => 'required',
             'contact' => 'required',
             'email' => 'required',
-            'password' => 'required|min:6|confirmed',
-            'cpassword_' => 'required|min:6'
+            'password' => 'required|between:6,16|confirmed',
+            'password_confirmation' => 'required ',
         ]);    
         $hashedPassword = Hash::make($request->password);
           $user_data = [
@@ -113,7 +122,7 @@ class UserController extends Controller
         $id = Auth::guard('uservalidate')->user()->id;
      
          $crud = UserModel::find($id);
-     
+   
         return view('site/profile',compact('crud'));
     }
 
@@ -140,6 +149,12 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+    public function logOut(Request $request)
+    {
+        Auth::logout();
+        $request->session()->flush();
+        return redirect('/');
     }
 
     /**

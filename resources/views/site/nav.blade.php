@@ -6,12 +6,15 @@
                 <span class="sr-only">Toggle navigation</span>
                 Menu <i class="fa fa-bars"></i>
             </button>
-            <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+            <a class="navbar-brand" href="{{ route('home') }}">Home</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
+                @php
+                $postCount = ( Session::get('postCount'));
+                @endphp
                 @php
                     $user_name = '';
                 @endphp
@@ -37,19 +40,17 @@
                 @endif
 
                 @if (!($user_name == ''))
-                    <li>
-                        <a href="{{ route('home') }}">Home</a>
-                    </li>
-
-                    <li>
-                        <a href="{{ route('user.post') }}">Post</a>
-                    </li>
+                   
 
                     <li>
                         <a href="{{ route('user.logout') }}">Logout</a>
                     </li>
                 @endif
-
+                @if ($postCount > 0)
+                <li>
+                    <a href="{{ route('user.post') }}">My Post</a>
+                </li>
+                @endif
 
             </ul>
         </div>
@@ -70,10 +71,12 @@
                     <h2 class="modal-title" align="center"><b>Login</b></h2>
                 </div>
                 <div class="modal-body">
+                  
                     @csrf
                     <div class="form-group has-feedback">
                         <label class="required">Email</label>
                         <input type="email" class="form-control" name="email" id="emailcheck" placeholder="Email">
+                        <span class="text-danger" id="email"></span>
                         @error('email')
                             <p style="color:red">{{ $message }}</p>
                         @enderror
@@ -82,6 +85,7 @@
                         <label class="required">Password</label>
                         <input type="password" class="form-control" name="password" id="passwordcheck"
                             placeholder="Password">
+                            <span class="text-danger"  id="password"></span>
                         @error('password')
                             <p style="color:red">{{ $message }}</p>
                         @enderror
@@ -92,10 +96,9 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
                         <button id="login" type="submit" href="{{ route('user.login') }}"
-                            class="btn btn-primary">Log
-                            in</button>
+                            class="btn btn-primary">Log in</button>
                     </div>
-
+                 
                 </div>
             </div>
         </div>
@@ -112,4 +115,4 @@
 <script src="{{ asset('site/validation/ajax.js') }}"></script>
 <script src="{{ asset('site/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('site/js/jqBootstrapValidation.js') }}"></script>
-<script src="{{ asset('site/validation/userLoginValidation.js') }}"></script>
+{{-- <script src="{{ asset('site/validation/userLoginValidation.js') }}"></script> --}}

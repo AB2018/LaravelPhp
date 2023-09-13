@@ -9,7 +9,7 @@ use App\Models\PostTagModel;
 use App\Models\TagModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Session;
 
 class UserPostController extends Controller
 {
@@ -22,7 +22,7 @@ class UserPostController extends Controller
     public function index()
     {   
         
-       $roles = PostModel::with('tag')->get()->toArray();;
+       $roles = PostModel::with('tag')->get()->toArray();
         $cruds = PostModel::paginate(3);
         return view('post/listPost', compact('cruds'));
     }
@@ -107,11 +107,12 @@ class UserPostController extends Controller
      */
     public function show()
     {
+
         $id = Auth::guard('uservalidate')->user()->id;
-        $cruds = PostModel::where('posted_by', $id)->get()->toArray();
-        // $cruds = PostModel::where('posted_by', $id)->all();
-        
-     // dd($cruds);
+      
+      // dd( Session::get('postCount'));
+        $cruds = PostModel::with('usercheck_post')->where('posted_by','=',$id)->get()->toArray();
+    
         return view('site/userPost',compact('cruds'));
     }
     /**
@@ -172,6 +173,15 @@ class UserPostController extends Controller
       
         $crud->save();
         return redirect()->route('post.view');
+    }
+
+    public function countPost()
+    {
+        $id = Auth::guard('uservalidate')->user()->id;
+        $post_data = PostModel::with('admin_post')->where('id','=',$id)->get()->toArray();
+        dd($post_data);
+   
+        return view('site/profile',compact('crud'));
     }
 
     /**

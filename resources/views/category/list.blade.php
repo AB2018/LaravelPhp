@@ -26,9 +26,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($cruds as $crud)
+                                @foreach ($cruds as $index => $crud)
                                     <tr>
-                                        <td>{{ $crud->id }}</td>
+                                        <td>{{$index + $cruds->firstItem()}} </td>
                                         <td>{{ $crud->name }}</td>
                                         <td>{{dateFormat($crud->created_at) }}</td>
                                         <td>{{ dateFormat($crud->updated_at)}}</td>
@@ -53,7 +53,7 @@
                         </table>
                     </div>
                     <div class="box-footer clearfix">
-
+                        {{ $cruds->links() }}
                     </div>
                 </div>
             </div>

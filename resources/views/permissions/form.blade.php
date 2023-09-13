@@ -53,7 +53,7 @@
                                         <label class="required">Status</label>
                                         <select class="form-control select2" id="status" name="status"
                                             data-placeholder="Select a status">
-                                            <option>select</option>
+                                            <option></option>
 
                                             <option value="Active"
                                                 {{ isset($crud) ? ($crud->status == 'Active' ? 'selected' : '') : '' }}>

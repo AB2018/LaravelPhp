@@ -16,7 +16,8 @@ class CrudController extends Controller
      */
     public function index()
     {
-        $cruds = Crud::all();
+        
+        $cruds = Crud::paginate(6);
 
         return view('category/list', compact('cruds'));
     }
@@ -41,7 +42,8 @@ class CrudController extends Controller
      */
     public function store(Request $request)
     {
-
+      
+      //  dd("gvfj");
         $request->validate([
             'category_name' => 'required',
         ]);

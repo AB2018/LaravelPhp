@@ -29,9 +29,9 @@
               $roleId = [];
              
               @endphp
-              @foreach($admin_data as $crud)
+              @foreach($admin_data as $index => $crud)
               <tr>
-                <td>{{ $no++ }}</td>
+                <td>{{$index + $admin_data->firstItem()}} </td>
                 <td>{{$crud->name}}</td>
                 <td>{{$crud->contact}}</td>
                 <td>{{$crud->status}}</td>

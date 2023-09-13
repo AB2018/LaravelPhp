@@ -7,9 +7,11 @@ use App\Models\PostCategoryModel;
 use App\Models\PostModel;
 use App\Models\PostTagModel;
 use App\Models\TagModel;
+use Facade\FlareClient\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Nette\Utils\Json;
 
 class PostController extends Controller
 {
@@ -22,7 +24,7 @@ class PostController extends Controller
  
  
      
-    public function index()
+    public function index(Request $request)
     {   
         //\DB::connection()->enableQueryLog();
        // $bp = PostModel::with('post_tag')->get()->toArray();
@@ -39,8 +41,17 @@ class PostController extends Controller
         //dd($roles);
          // dd(\DB::getQueryLog());
 
-        $cruds = PostModel::paginate(3);
-        return view('post/listPost', compact('cruds'));
+
+         if($request->ajax()){
+            $cruds = PostModel::where('status', 'Published')->get()->toArray();
+            dd($cruds);
+            
+         }
+         else
+         {
+            $cruds = PostModel::paginate(3);
+         }
+            return view('post/listPost', compact('cruds'));
     }
 
     /**
@@ -50,12 +61,36 @@ class PostController extends Controller
      */
     public function create()
     {
-        
+     
         
         $get = Crud::all();
         $getTag = TagModel::all();
         return view('post/addPost', ['get' => $get, 'getTag' => $getTag]);
     }
+
+    public function published(Request $request)
+    {
+        $published = 'Published';
+        $notpublished = 'Not Published';
+        $id = $request->id;
+       //dd($request->get('status') );
+
+        if ($request->get('status') == "Published") {
+           
+        $data['status'] = $published;
+        PostModel::where('id', $id)->update($data);
+        }
+        else{
+            $data['status'] = $notpublished;
+            PostModel::where('id', $id)->update($data);
+        }
+
+        return response()->json(['success'=>'Status change successfully.']);
+       
+
+        
+    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -224,6 +259,27 @@ class PostController extends Controller
        // $crud->photo =  $fileName;
       
         $crud->save();
+
+        $post_id = $request->id;
+        $category_id =  $request->category_id;
+        foreach($category_id as $category_id1){
+            $post_category[] = [
+                'category_id'=>$category_id1,
+                'post_id'=>$post_id,
+                
+            ];
+        }    
+
+        $post_category_model = PostCategoryModel::insert($post_category);
+
+        $tag_id =  $request->tag_id;
+        foreach($tag_id as $tag_id1){
+            $post_tag[]=[
+                'tag_id'=>$tag_id1,
+                'post_id'=>$post_id,
+            ];
+        }
+        $post_tag_model = PostTagModel::insert($post_tag);
         return redirect()->route('post.view');
     }
 

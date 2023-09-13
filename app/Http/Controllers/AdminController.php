@@ -53,7 +53,7 @@ class AdminController extends Controller
             'contact' => 'required',
             'status' => 'required',
             'email' => 'required',
-            'password' => 'required_if:id,id',
+            'password' => 'required',
         ]);    
         $hashedPassword = Hash::make($request->password);
           $admin_data = [

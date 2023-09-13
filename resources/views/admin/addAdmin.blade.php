@@ -40,14 +40,21 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="required">Status</label>
-                                <select class="form-control select2" name="status" data-placeholder="Select a status"  >
-                                    <option >select</option>
-                               
-                                    <option value="Active" {{ isset($crud)? ($crud->status == 'Active'? 'selected': '') : '' }} >Active</option>
-                                    <option value="Inactive" {{ isset($crud)? ($crud->status == 'Inactive'? 'selected': '') : '' }}>Inactive</option>
+                                <select class="form-control select2" id="status" name="status"
+                                    data-placeholder="Select a status">
+                                    <option></option>
+
+                                    <option value="Active"
+                                        {{ isset($crud) ? ($crud->status == 'Active' ? 'selected' : '') : '' }}>
+                                        Active
+                                    </option>
+                                    <option value="Inactive"
+                                        {{ isset($crud) ? ($crud->status == 'Inactive' ? 'selected' : '') : '' }}>
+                                        Inactive
+                                    </option>
                                 </select>
                                 @error('status')
-                                <p style="color:red">{{ $message }}</p>
+                                    <p style="color:red">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
@@ -83,5 +90,9 @@
 
 </section>
 
+@endsection
+@section('js')
+<script src="{{ asset('plugins/jQuery/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('admin_asset/validation/admin.validation.js') }}"></script>
 @endsection
 

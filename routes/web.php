@@ -5,6 +5,7 @@ use App\Http\Controllers\ArrayController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CrudController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LikeDislikeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PostController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserPostController;
 use App\Models\AdminModel;
+use App\Models\LikeDislikeModel;
 use App\Models\RoleModel;
 
 
@@ -31,7 +33,7 @@ Route::group(['middleware' => ['checkInput']], function() {
 
 Route::get('category/list', [CrudController::class,'index'])->name('category.view')->middleware('CheckPermission:list_category');
 Route::get('category/add', [CrudController::class,'create'])->name('category.show')->middleware('CheckPermission:add_category');
-Route::post('category/create', [CrudController::class,'store'])->name('category.store')->middleware('CheckPermission:create_category');
+Route::post('category/create', [CrudController::class,'store'])->name('category.store')->middleware('CheckPermission:add_category');
 Route::get('category/edit/{id}', [CrudController::class,'edit'])->name('category.edit')->middleware('CheckPermission:edit_category');
 Route::post('category/update', [CrudController::class,'update'])->name('category.update')->middleware('CheckPermission:update_category');
 Route::get('category/delete/{id}', [CrudController::class,'destroy'])->name('category.destroy')->middleware('CheckPermission:delete_category');
@@ -39,7 +41,7 @@ Route::get('category/delete/{id}', [CrudController::class,'destroy'])->name('cat
 
 Route::get('tag/list', [TagController::class,'index'])->name('tag.view')->middleware('CheckPermission:list_tag');
 Route::get('tag/add', [TagController::class,'create'])->name('tag.show')->middleware('CheckPermission:add_tag');
-Route::post('tag/create', [TagController::class,'store'])->name('tag.store')->middleware('CheckPermission:create_tag');
+Route::post('tag/create', [TagController::class,'store'])->name('tag.store')->middleware('CheckPermission:add_tag');
 Route::get('tag/edit/{id}', [TagController::class,'edit'])->name('tag.edit')->middleware('CheckPermission:edit_tag');
 Route::post('tag/update', [TagController::class,'update'])->name('tag.update')->middleware('CheckPermission:update_tag');
 Route::get('tag/delete/{id}', [TagController::class,'destroy'])->name('tag.destroy')->middleware('CheckPermission:delete_tag');;
@@ -115,13 +117,17 @@ Route::post('/login', [UserController::class, 'authenticate'])->name('user.login
 Route::get('/', [HomeController::class,'index'])->name('home');
 Route::get('/post/details/{id}', [HomeController::class,'show'])->name('post.details');
 Route::get('/user/register', [HomeController::class,'register'])->name('user.register');
-Route::get('/user/logout', [SiteController::class,'logOut'])->name('user.logout');
+Route::get('/user/logout', [UserController::class,'logOut'])->name('user.logout');
 Route::get('/user/profile', [UserController::class,'show'])->name('user.profile');
 Route::post('/store/profile', [UserController::class,'create'])->name('store.profile');
 Route::get('/user/post', [UserPostController::class,'show'])->name('user.post');
 Route::post('post/user/store', [UserPostController::class,'store'])->name('userPost.store');
 Route::get('/user/post/add', [UserPostController::class,'create'])->name('add.userPost');
-Route::post('post/published', [SiteController::class,'update'])->name('post.published');
+Route::post('post/published', [PostController::class,'published'])->name('post.published');
+Route::get('show/published/post', [PostController::class,'index'])->name('show.published');
+
+Route::get('post/like', [LikeDislikeController::class,'index'])->name('like.check');
+
 
 
 

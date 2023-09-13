@@ -11,11 +11,10 @@ $('#userForm').validate({
         },
         password: {
             required: true,
-            minlength: 6
-        },
-        cpassword: {
-            required: true,
             minlength: 6,
+        },
+        password_confirmation: {
+            required: true,
             equalTo: "#password"
         }
 

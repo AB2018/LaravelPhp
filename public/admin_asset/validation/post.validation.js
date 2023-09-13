@@ -6,8 +6,12 @@ $('#form').validate({
 	rules: {
 	
 		title: "required",
-        tag_id : "required",
-        category_id : "required",
+        'category_id[]': {
+            required: true
+          },
+          'tag_id[]': {
+            required: true
+          },
         image : {
             validateImage:true,
             validateExtension: true

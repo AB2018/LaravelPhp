@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TagModel;
 use Illuminate\Http\Request;
-use League\CommonMark\Extension\Table\TableRow;
 
-class TagController extends Controller
+class LikeDislikeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +13,7 @@ class TagController extends Controller
      */
     public function index()
     {
-        $cruds = TagModel::paginate(6);
-
-        return view('tag/tagList', compact('cruds'));
+        //
     }
 
     /**
@@ -27,8 +23,7 @@ class TagController extends Controller
      */
     public function create()
     {
-    
-        return view('tag/tagAdd');
+        //
     }
 
     /**
@@ -39,14 +34,7 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'tag_name' => 'required',
-        ]);
-        
-        $crud = new TagModel();
-        $crud->tag_Name =  $request->get('tag_name');
-        $crud->save();
-        return redirect()->route('tag.view');
+        //
     }
 
     /**
@@ -68,9 +56,7 @@ class TagController extends Controller
      */
     public function edit($id)
     {
-        
-        $crud = TagModel::find($id);
-        return view('tag/tagEdit', compact('crud'));
+        //
     }
 
     /**
@@ -80,17 +66,9 @@ class TagController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-       
-        $id = $request->id;
-      
-        $crud = TagModel::find($id);
-      
-        $crud->tag_Name =  $request->get('tag_name');
-
-        $crud->save();
-        return redirect()->route('tag.view');
+        //
     }
 
     /**
@@ -101,8 +79,6 @@ class TagController extends Controller
      */
     public function destroy($id)
     {
-        $crud=TagModel::find($id);  
-        $crud->delete(); 
-        return redirect()->route('tag.view');
+        //
     }
 }
