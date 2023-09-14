@@ -23,7 +23,7 @@
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <div class="post-preview">
                     <form id="category"  action="{{ route('home') }}">
-                        @csrf
+                        @csrf     
                         <div class="col-md-6">
                             <div class="form-group">
                                 
@@ -59,9 +59,10 @@
                         <input type="submit" value="Submit" class="myButton">
                     </form>
                     @foreach ($post_data as $crud)
-                    <input type="hidden" name="id" id="post_id" value="{{$crud->id}}">
+                 
                         @if (!empty($crud))
                             <a href="{{ route('post.details', ['id' => $crud->id]) }}">
+                    
 
                                 <h2 class="post-title">
                                     {{ $crud->title }}
@@ -73,13 +74,17 @@
                                     {{ $crud->subtitle }}
                                 </h3>
                             </a>
+                           
                             <p class="post-meta">Posted by <a href="#">{{ $crud->name}}</a>
                                 {{ \Carbon\Carbon::parse($crud->created_at)->format('F j, Y') }}</p>
                                 <p class="post-meta">Tag : <button>{{ $crud->tag_name}} </button>
-                                <button class="fa  fa-thumbs-up" style='font-size:20px;color:rgb(110, 207, 90)' id="like" href=""></button>
-                                <button class="fa  fa-thumbs-down" style='font-size:20px;color:rgb(228, 136, 75)' href=""></button>
-                                </p>
-
+                                
+                                       
+                                <button class="fa fa-thumbs-up like" style='font-size:20px;color:rgb(110, 207, 90)' data-id="{{$crud->id }}"  data-user_id="{{$crud->user_id}}" href=""></button>
+                                <button class="fa fa-thumbs-down" style='font-size:20px;color:rgb(228, 136, 75)' class="test"  href=""></button>
+                        
+                            </p>
+                          
                            
                         @endif
                         @if ((empty($crud)))
@@ -95,8 +100,8 @@
                             <p class="post-meta">Posted by <a href="#">{{ $crud->name }}></a>
                                 {{ \Carbon\Carbon::parse($crud->created_at)->format('F j, Y') }}</p>
                                 <p class="post-meta">Tag : {{ $crud->tag_name}} 
-                                    <button class="fa  fa-thumbs-up" style='font-size:20px;color:rgb(110, 207, 90)'id="like" href=""></button>
-                                    <button class="fa  fa-thumbs-down" style='font-size:20px;color:rgb(228, 136, 75)' href=""></button>
+                                    <button class="fa  fa-thumbs-up like" style='font-size:20px;color:rgb(110, 207, 90)'  data-id="{{$crud->id }}" data-user_id="{{$crud->user_id}}"  href=""></button>
+                                    <button class="fa  fa-thumbs-down" style='font-size:20px;color:rgb(228, 136, 75)'id="test" href=""></button>
                                     
                                 </p>
                             <hr>
@@ -104,10 +109,7 @@
                         
                     @endforeach
                 </div>
-
-
-
-                <!-- Pager -->
+         <!-- Pager -->
                 <ul class="pager">
                     <li class="next">
                         <a href="#">Older Posts &rarr;</a>

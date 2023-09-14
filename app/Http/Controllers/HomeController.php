@@ -61,6 +61,7 @@ class HomeController extends Controller
                     'post.status',
                     'post.subtitle',
                     'post.created_at',
+                    'user.id as user_id',
                     DB::raw('group_concat(distinct(tag.tag_name )) as tag_name'),
                     DB::raw('group_concat(distinct(category.name) ) as category_name'),
                     DB::raw('IF(admin.name is null, user.name, admin.name) as name')
@@ -68,6 +69,7 @@ class HomeController extends Controller
                 ->where('post.status', '=', 'Published')
                 ->groupBy('post.id')
                 ->get()->toArray();
+               // dd($post_data);
         }
 
         return view('site/home', compact('post_data', 'getCategory', 'getTag'));
@@ -115,8 +117,6 @@ class HomeController extends Controller
     }
     public function show($id)
     {
-
-
         $post_data = PostModel::with('admin_post', 'usercheck_post')->where('id', '=', $id)->get()->toArray();
         return view('site/postDetails', compact('post_data'));
     }

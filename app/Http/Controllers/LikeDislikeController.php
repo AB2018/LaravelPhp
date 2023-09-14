@@ -11,9 +11,17 @@ class LikeDislikeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+       
+        $profile = $request->all();
+        dd($profile);
+
+    //    $id = Auth::guard('uservalidate')->user()->id;
+    //     UserModel::where('id', $id)
+    //     ->update($profile);
+    //     $success = 'success';
+    //     return Response::json($success); 
     }
 
     /**

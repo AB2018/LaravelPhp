@@ -13,6 +13,8 @@ class UserModel extends Authenticatable
     protected $guarded = [];
     use HasFactory;
 
- 
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
   
 }

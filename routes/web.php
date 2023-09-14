@@ -14,9 +14,8 @@ use App\Http\Controllers\SiteController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserPostController;
-use App\Models\AdminModel;
-use App\Models\LikeDislikeModel;
-use App\Models\RoleModel;
+use App\Http\Controllers\ForgotPasswordController;
+
 
 
 // Route::get('tagadd', function () {
@@ -126,9 +125,26 @@ Route::get('/user/post/add', [UserPostController::class,'create'])->name('add.us
 Route::post('post/published', [PostController::class,'published'])->name('post.published');
 Route::get('show/published/post', [PostController::class,'index'])->name('show.published');
 
-Route::get('post/like', [LikeDislikeController::class,'index'])->name('like.check');
+Route::post('post/like', [LikeDislikeController::class,'index'])->name('like.check');
+
+Route::get('/forget/password', function () {
+   
+    return view('site/forgetPassword');
+});
+
+Route::get('/forget/password/link', function () {
+   
+    return view('site/forgetPasswordLink');
+});
+  
+Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
+Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post'); 
+Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
+Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
 
 
+Route::get('account', [AuthController::class, 'store'])->middleware(['auth', 'is_verify_email']); 
+Route::get('account/verify/{token}', [AuthController::class, 'verifyAccount'])->name('user.verify'); 
 
 
 

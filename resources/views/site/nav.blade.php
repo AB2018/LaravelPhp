@@ -91,7 +91,20 @@
                         @enderror
                     </div>
                     <span id="availability"></span>
-
+                    <div class="form-group row">
+                        <div class="col-md-6 offset-md-4">
+                            <div class="checkbox">
+                                <label>
+                                    
+                                    <a href="{{ route('forget.password.get') }}">Reset Password</a>
+                                    <label>
+                                        <input type="checkbox"> Remember Me
+                                      </label>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                   
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>

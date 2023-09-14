@@ -13,10 +13,10 @@ $('#userForm').validate({
             required: true,
             minlength: 6,
         },
-        password_confirmation: {
-            required: true,
-            equalTo: "#password"
-        }
+        // password_confirmation: {
+        //     required: true,
+        //     equalTo: "#password"
+        // }
 
 	}, messages: {
 		name: "Please enter your name",

@@ -65,6 +65,7 @@ $user_id = Auth::guard('uservalidate')->user()->id;
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
                         <button id="storePermission" type="submit" href="{{ route('store.profile')}}"
                             class="btn btn-primary">Save</button>
+                            <a href="{{ route('forget.password.get') }}">Reset Password</a>
                     </div>
 
                 </div>

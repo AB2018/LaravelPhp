@@ -1,5 +1,5 @@
 $('#test').click(function () {
-    console.log("testing");
+    alert("hii");
 
 });
 
@@ -76,12 +76,7 @@ $('.status_type').on('change', function () {
     var id =  $(this).attr("data-id");
     // console.log(status);
      console.log(id);
-    // if($(".status_type").is(":checked")){
-    //     status="yes";
-    //     }
-    //     else{
-    //         status="no";
-    //     }
+
         $.ajax({
             method:'POST',
             url:publishedCheck,
@@ -113,30 +108,24 @@ $('.status').on('change', function () {
         });
     
 });
+console.log("jhvjv");
 
-$('#like').click(function () {
-    var post_id = $('#post_id').val();
-    console.log(post_id);
-    $.ajax({
-        method: "POST",
-        url: likeDislike,
+$('.like').click(function () {
+   
+    var id =  $(this).attr("data-id");
+    var user_id =  $(this).attr("data-user_id");
+    console.log(id);
+        $.ajax({
+            method:'post',
+            url:likeDislike,
+            data:{
+                'user_id': user_id, 
+                'post_id' :id,
+            "_token": token,},
 
-        data: {
-            'email': email,
-            "password": password,
-            "_token": token,
-        },
-
-        success: function (result) {
-            if (result == 'success') {
-                window.location.reload();
-                // window.location = "/";
-            }
-            else {
-                $('#availability').html('<label class="text-danger">Username password not match</label>');
-            }
-        }
-    })
-
+            success: function(data){
+             console.log('success');
+          }
+        });
 });
 
