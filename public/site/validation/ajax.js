@@ -1,7 +1,7 @@
-$('#test').click(function () {
-    alert("hii");
+// $('#test').click(function () {
+//     alert("hii");
 
-});
+// });
 
 
 $('#login').click(function () {
@@ -32,8 +32,11 @@ $('#login').click(function () {
                 window.location.reload();
                 // window.location = "/";
             }
-            else {
-                $('#availability').html('<label class="text-danger">Username password not match</label>');
+            else if(result == 'verifyMail') {
+                $('#availability').html('<label class="text-danger">Please Verify your email</label>');
+            }
+            else if(result == 'faile'){
+                $('#availability').html('<label class="text-danger">Email or Password not match</label>');
             }
         }
     })

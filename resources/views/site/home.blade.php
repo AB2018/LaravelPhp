@@ -22,6 +22,10 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <div class="post-preview">
+                    <div class="form-group col-xs-12">
+                       
+                        <a type="submit"  href="{{ route('add.userPost') }}" class="btn btn-default">Add Post</a>
+                    </div>
                     <form id="category"  action="{{ route('home') }}">
                         @csrf     
                         <div class="col-md-6">
@@ -56,7 +60,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <input type="submit" value="Submit" class="myButton">
+                      
                     </form>
                     @foreach ($post_data as $crud)
                  

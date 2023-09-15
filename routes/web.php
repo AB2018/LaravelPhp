@@ -110,9 +110,9 @@ Route::get('/listingpost', function () {
    
 //     return view('site/home');
 // });
-
+Route::post('/check/email', [UserController::class,'userEmailCheck'])->name('check.email');
 Route::post('/register', [UserController::class,'store'])->name('user.store');
-Route::post('/login', [UserController::class, 'authenticate'])->name('user.login');
+Route::post('/login', [UserController::class, 'isMailVerify'])->name('user.login');
 Route::get('/', [HomeController::class,'index'])->name('home');
 Route::get('/post/details/{id}', [HomeController::class,'show'])->name('post.details');
 Route::get('/user/register', [HomeController::class,'register'])->name('user.register');
@@ -143,8 +143,8 @@ Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showRese
 Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
 
 
-Route::get('account', [AuthController::class, 'store'])->middleware(['auth', 'is_verify_email']); 
-Route::get('account/verify/{token}', [AuthController::class, 'verifyAccount'])->name('user.verify'); 
+Route::get('account', [UserController::class, 'store'])->middleware(['auth', 'is_verify_email']); 
+Route::get('account/verify/{token}', [UserController::class, 'verifyAccount'])->name('user.verify'); 
 
 
 

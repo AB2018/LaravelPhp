@@ -18,6 +18,16 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            @if (Session::has('message'))
+            <div class="alert alert-success" role="alert">
+               {{ Session::get('message') }}
+           </div>
+       @endif
+       @if (Session::has('emailExistMessage'))
+       <div class="alert alert-danger" role="alert">
+          {{ Session::get('emailExistMessage') }}
+      </div>
+  @endif
           <form method="post" action="{{route('user.store')}}" id="userForm" >
             @csrf
                 <div class="row control-group">
@@ -71,7 +81,7 @@
                 <div class="row">
                     <div class="form-group col-xs-12">
                        
-                        <button type="submit" class="btn btn-default">Send</button>
+                        <button type="submit" class="btn btn-default">Register</button>
                     </div>
                 </div>
                 
@@ -85,6 +95,11 @@
 
 @endsection
 @section('userjs')
+<script>
+    var emailCheck = "{{ route('check.email') }}";
+    var token = "{{ csrf_token() }}";
+    </script>
+    
 <script src="{{asset('site/vendor/jquery/jquery.min.js')}}"></script>
 <script src="{{ asset('plugins/jQuery/jquery.validate.min.js') }}"></script>
 <script src="{{asset('site/vendor/bootstrap/js/bootstrap.min.js')}}"></script>
