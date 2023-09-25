@@ -47,11 +47,11 @@
                                             <td> {{ $index + $cruds->firstItem() }} </td>
                                             <td>{{ $crud->title }}</td>
                                             <td>{{ $crud->subtitle }}</td>
-                                            <td><label class="switch">
+                                            <td><label class="switch" >
                                                     {{-- <input type="hidden" id="id" name="id" value="{{$crud->id}}"> --}}
                                                     <input class="status_type" name="status_type" id="status_type"
                                                         data-id="{{ $crud->id }}" data-on="Published"
-                                                        data-off="Not Published" type="checkbox"
+                                                        data-off="Not Published" type="checkbox" 
                                                         {{ $crud->status == 'Published' ? 'checked' : '' }}>
 
                                                     <span class="slider"></span>

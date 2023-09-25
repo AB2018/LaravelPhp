@@ -37,22 +37,10 @@
                                             <p style="color:red">{{ $message }}</p>
                                         @enderror
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="required">Name</label>
-                                        <input type="text" name="name" readonly id="name" class="form-control"
-                                            style="width: 100%;" value="{{ old('name', isset($crud) ? $crud->name : '') }}">
-                                        @error('name')
-                                            <p style="color:red">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="required">Status</label>
                                         <select class="form-control select2" id="status" name="status"
-                                            data-placeholder="Select a status">
+                                            data-placeholder="Select a status"  style="width: 100%;">
                                             <option></option>
 
                                             <option value="1"
@@ -65,6 +53,16 @@
                                             </option>
                                         </select>
                                         @error('status')
+                                            <p style="color:red">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="required">Name</label>
+                                        <input type="text" name="name" readonly id="name" class="form-control"
+                                            style="width: 100%;" value="{{ old('name', isset($crud) ? $crud->name : '') }}">
+                                        @error('name')
                                             <p style="color:red">{{ $message }}</p>
                                         @enderror
                                     </div>

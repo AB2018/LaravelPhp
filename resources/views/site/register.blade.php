@@ -32,8 +32,8 @@
             @csrf
                 <div class="row control-group">
                     <div class="form-group col-xs-12 floating-label-form-group controls">
-                        
-                        <input type="text" class="form-control" placeholder="Name" id="name" name="name">
+                        <label class="required" style="font-size: 17px">Name</label>
+                        <input type="text" class="form-control" id="name" name="name">
                         @error('name')
                         <p style="color:red">{{ $message }}</p>
                         @enderror
@@ -41,8 +41,8 @@
                 </div>
                 <div class="row control-group">
                     <div class="form-group col-xs-12 floating-label-form-group controls">
-                      
-                        <input type="text" class="form-control" placeholder="Contact" id="phone" name="contact" >
+                        <label class="required" style="font-size: 17px">Contact</label>
+                        <input type="text" class="form-control" id="phone" name="contact" >
                         @error('contact')
                         <p style="color:red">{{ $message }}</p>
                         @enderror
@@ -50,8 +50,9 @@
                 </div>
                 <div class="row control-group">
                     <div class="form-group col-xs-12 floating-label-form-group controls">
-                       
-                        <input type="text" class="form-control" placeholder="Email Address" id="email" name="email" >
+                        <label class="required" style="font-size: 17px">Email</label>
+                        <input type="text" class="form-control" id="email" name="email" >
+                        <span id="availability"></span>
                         @error('email')
                         <p style="color:red">{{ $message }}</p>
                         @enderror
@@ -60,17 +61,17 @@
  
                 <div class="row control-group">
                     <div class="form-group col-xs-12 floating-label-form-group controls">
-                     
-                        <input type="password" class="form-control" placeholder="Password" id="password" name="password" >
-                        @error('password')
+                        <label class="required" style="font-size: 17px">Password</label>
+                        <input type="password" class="form-control" id="passwordd" name="passwordd" >
+                        @error('passwordd')
                         <p style="color:red">{{ $message }}</p>
                         @enderror
                     </div>
                 </div>
                 <div class="row control-group">
                     <div class="form-group col-xs-12 floating-label-form-group controls">
-                     
-                        <input type="password" class="form-control" placeholder="confirm password" id="password_confirmation" name="password_confirmation" >
+                        <label class="required" style="font-size: 17px">Confirm Password</label>
+                        <input type="password" class="form-control"  id="password_confirmation" name="password_confirmation" >
                         @error('password_confirmation')
                         <p style="color:red">{{ $message }}</p>
                         @enderror
@@ -98,7 +99,10 @@
 <script>
     var emailCheck = "{{ route('check.email') }}";
     var token = "{{ csrf_token() }}";
+
+
     </script>
+
     
 <script src="{{asset('site/vendor/jquery/jquery.min.js')}}"></script>
 <script src="{{ asset('plugins/jQuery/jquery.validate.min.js') }}"></script>
@@ -107,6 +111,9 @@
 <script src="{{asset('site/js/contact_me.js')}}"></script>
 <script src="{{asset('site/js/clean-blog.min.js')}}"></script>
 <script src="{{asset('site/validation/userValidation.js')}}"></script>
+
+
+
 
 
 @endsection

@@ -27,39 +27,47 @@
                                 </tr>
                             </thead>
                             <tbody>
-                              @php
-                              $roleId = [];
-                             
-                              @endphp
-                            
+                                @php
+                                    $roleId = [];
+                                    
+                                @endphp
+
                                 @foreach ($role_data as $index => $crud)
                                     <tr>
-                                        <td>{{$index + $role_data->firstItem()}} </td>
+                                        <td>{{ $index + $role_data->firstItem() }} </td>
                                         <td>{{ $crud->slug }}</td>
                                         <td>{{ $crud->role }}</td>
-                                        <td>{{ $crud->status }}</td>
                                         <td>
-                                          @php
-                                          $per_name = [];
-                                          @endphp
+                                        @php
+                                            if ($crud->status == 1) {
+                                                print 'Active';
+                                            } else {
+                                                print 'InActive';
+                                            }
+                                        @endphp
+                                        </td>
+                                        <td>
+                                            @php
+                                                $per_name = [];
+                                            @endphp
                                             {{-- @dd($crud['permissions'] ); --}}
                                             @foreach ($crud->permissions as $name)
                                                 @php
-                                                  
-                                                 
+                                                    
                                                     $roleId[$crud->id][] = $name->id;
                                                     
-                                                    $per_name[] = $name->name;       
-                                                    @endphp 
+                                                    $per_name[] = $name->name;
+                                                @endphp
                                             @endforeach
                                             {{ implode(',', $per_name) }}
-                                            
+
                                         </td>
                                         <td>
                                             <a href="{{ route('role.edit', ['id' => $crud->id]) }}"><i
                                                     class="fa fa-edit"></I></a>
-                                                    <a  href="{{ route('role.destroy', ['id'=>$crud->id])}}"   onclick="return confirm('Are you sure to delete?')"> 
-                                                      <i class="fa fa-trash"></I></a>
+                                            <a href="{{ route('role.destroy', ['id' => $crud->id]) }}"
+                                                onclick="return confirm('Are you sure to delete?')">
+                                                <i class="fa fa-trash"></I></a>
                                             <a data-role="{{ $crud->id }}" data-toggle="modal" class="permission-modal"
                                                 data-target="#edit-modal"> <i class="fa fa-eye"></I></a>
 
@@ -93,8 +101,8 @@
                                             <div class="form-group">
                                                 <input type="hidden" name="role_id" id="role_id">
                                                 <label class="required">Permission</label>
-                                            </br>
-                                                
+                                                </br>
+
 
                                                 @foreach ($getPermission as $getPermission)
                                                     <input type="checkbox" id="permission_id" name="permission_id[]"
@@ -121,17 +129,17 @@
     <script>
         $(document).ready(function() {
             var roleId = @json($roleId);
-          
+
             $(".permission-modal").click(function() {
                 $('.permission').removeAttr('checked');
                 var role_id = $(this).attr("data-role");
                 $("#role_id").val(role_id);
-             
+
                 var permission = roleId[role_id];
                 console.log(permission);
                 $.each(permission, function(i, val) {
-                  $(".permission-"+val).prop('checked',true);
-               
+                    $(".permission-" + val).prop('checked', true);
+
                 });
 
 

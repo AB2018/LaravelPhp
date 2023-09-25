@@ -2,40 +2,29 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ArrayController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CrudController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LikeDislikeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\SiteController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserPostController;
 use App\Http\Controllers\ForgotPasswordController;
+use App\Models\LikeDislikeModel;
 
-
-
-// Route::get('tagadd', function () {
-//     return view('tag/tagAdd');
-// });
-// Route::get('array', [ArrayController::class,'index']);
-
-
-// Route::get('/', function () {
-//     return view('dashboard');
-// });
 Route::group(['middleware' => ['checkInput']], function() {
    
 
-Route::get('category/list', [CrudController::class,'index'])->name('category.view')->middleware('CheckPermission:list_category');
-Route::get('category/add', [CrudController::class,'create'])->name('category.show')->middleware('CheckPermission:add_category');
-Route::post('category/create', [CrudController::class,'store'])->name('category.store')->middleware('CheckPermission:add_category');
-Route::get('category/edit/{id}', [CrudController::class,'edit'])->name('category.edit')->middleware('CheckPermission:edit_category');
-Route::post('category/update', [CrudController::class,'update'])->name('category.update')->middleware('CheckPermission:update_category');
-Route::get('category/delete/{id}', [CrudController::class,'destroy'])->name('category.destroy')->middleware('CheckPermission:delete_category');
+Route::get('category/list', [CategoryController::class,'index'])->name('category.view')->middleware('CheckPermission:list_category');
+Route::get('category/add', [CategoryController::class,'create'])->name('category.show')->middleware('CheckPermission:add_category');
+Route::post('category/create', [CategoryController::class,'store'])->name('category.store')->middleware('CheckPermission:add_category');
+Route::get('category/edit/{id}', [CategoryController::class,'edit'])->name('category.edit')->middleware('CheckPermission:edit_category');
+Route::post('category/update', [CategoryController::class,'update'])->name('category.update')->middleware('CheckPermission:update_category');
+Route::get('category/delete/{id}', [CategoryController::class,'destroy'])->name('category.destroy')->middleware('CheckPermission:delete_category');
 
 
 Route::get('tag/list', [TagController::class,'index'])->name('tag.view')->middleware('CheckPermission:list_tag');
@@ -110,9 +99,9 @@ Route::get('/listingpost', function () {
    
 //     return view('site/home');
 // });
-Route::post('/check/email', [UserController::class,'userEmailCheck'])->name('check.email');
+Route::post('/check/email', [UserController::class,'checkEmail'])->name('check.email');
 Route::post('/register', [UserController::class,'store'])->name('user.store');
-Route::post('/login', [UserController::class, 'isMailVerify'])->name('user.login');
+Route::post('/login', [UserController::class, 'authenticate'])->name('user.login');
 Route::get('/', [HomeController::class,'index'])->name('home');
 Route::get('/post/details/{id}', [HomeController::class,'show'])->name('post.details');
 Route::get('/user/register', [HomeController::class,'register'])->name('user.register');
@@ -146,6 +135,10 @@ Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPass
 Route::get('account', [UserController::class, 'store'])->middleware(['auth', 'is_verify_email']); 
 Route::get('account/verify/{token}', [UserController::class, 'verifyAccount'])->name('user.verify'); 
 
+// Route::get('/filter-data', [HomeController::class, 'index'])->name('filter.data');
+//Route::post('/like/{id}', [LikeDislikeController::class, 'like'])->name('like');
+Route::post('/like/{id}', [LikeDislikeController::class, 'likePost'])->name('posts.like');
+Route::post('/verify/email', [UserController::class,'checkEmail'])->name('check.email');
 
 
 

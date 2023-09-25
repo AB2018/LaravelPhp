@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CategoryModel;
 use App\Models\Crud;
 use App\Models\PostCategoryModel;
 use App\Models\PostModel;
@@ -35,7 +36,7 @@ class UserPostController extends Controller
     public function create()
     {
         
-        $get = Crud::all();
+        $get = CategoryModel::all();
         $getTag = TagModel::all();
         return view('site/userAddPost', ['get' => $get, 'getTag' => $getTag]);
     }
@@ -123,7 +124,7 @@ class UserPostController extends Controller
      */
     public function edit($id)
     {
-        $get = Crud::all();
+        $get = CategoryModel::all();
         $getTag = TagModel::all();
         $crud = PostModel::with('post_tag','post_category')->find($id);
         return view('post/editPost',compact('crud','get','getTag'));

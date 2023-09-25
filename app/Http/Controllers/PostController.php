@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CategoryModel;
 use App\Models\Crud;
 use App\Models\PostCategoryModel;
 use App\Models\PostModel;
@@ -22,8 +23,10 @@ class PostController extends Controller
      * 
      */
  
+   
  
      
+
     public function index(Request $request)
     {   
         //\DB::connection()->enableQueryLog();
@@ -63,7 +66,7 @@ class PostController extends Controller
     {
      
         
-        $get = Crud::all();
+        $get = CategoryModel::all();
         $getTag = TagModel::all();
         return view('post/addPost', ['get' => $get, 'getTag' => $getTag]);
     }
@@ -202,7 +205,7 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        $get = Crud::all();
+        $get = CategoryModel::all();
         $getTag = TagModel::all();
         //$bp = PostModel::with('post_tag')->get()->toArray();
         

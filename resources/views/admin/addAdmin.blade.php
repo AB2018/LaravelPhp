@@ -44,12 +44,12 @@
                                     data-placeholder="Select a status">
                                     <option></option>
 
-                                    <option value="Active"
-                                        {{ isset($crud) ? ($crud->status == 'Active' ? 'selected' : '') : '' }}>
+                                    <option value="1"
+                                        {{ isset($crud) ? ($crud->status == '1' ? 'selected' : '') : '' }}>
                                         Active
                                     </option>
-                                    <option value="Inactive"
-                                        {{ isset($crud) ? ($crud->status == 'Inactive' ? 'selected' : '') : '' }}>
+                                    <option value="0"
+                                        {{ isset($crud) ? ($crud->status == '0' ? 'selected' : '') : '' }}>
                                         Inactive
                                     </option>
                                 </select>

@@ -37,6 +37,25 @@
                             <p style="color:red">{{ $message }}</p>
                             @enderror
                         </div>
+                        <div class="form-group">
+                          <label class="required">Status</label>
+                          <select class="form-control select2" id="status" name="status"
+                              data-placeholder="Select a status">
+                              <option></option>
+  
+                              <option value="1"
+                                  {{ isset($crud) ? ($crud->status == '1' ? 'selected' : '') : '' }}>
+                                  Active
+                              </option>
+                              <option value="0"
+                                  {{ isset($crud) ? ($crud->status == '0' ? 'selected' : '') : '' }}>
+                                  Inactive
+                              </option>
+                          </select>
+                          @error('status')
+                              <p style="color:red">{{ $message }}</p>
+                          @enderror
+                      </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
@@ -47,28 +66,7 @@
                             @enderror
                         </div>
                     </div>
-                    
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label class="required">Status</label>
-                        <select class="form-control select2" id="status" name="status"
-                            data-placeholder="Select a status">
-                            <option></option>
-
-                            <option value="1"
-                                {{ isset($crud) ? ($crud->status == '1' ? 'selected' : '') : '' }}>
-                                Active
-                            </option>
-                            <option value="0"
-                                {{ isset($crud) ? ($crud->status == '0' ? 'selected' : '') : '' }}>
-                                Inactive
-                            </option>
-                        </select>
-                        @error('status')
-                            <p style="color:red">{{ $message }}</p>
-                        @enderror
-                    </div>
-                        </div>
+                 
               </div>
               <!-- /.box-body -->
 

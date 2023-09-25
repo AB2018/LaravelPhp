@@ -24,7 +24,7 @@
                     <div class="post-preview">
                         <div class="form-group col-xs-12">
                             <div class="box-tools pull-right">
-                            <a type="submit" class="btn btn-default" href="{{ route('add.userPost') }}">Add Post</a>
+                                <a type="submit" class="btn btn-default" href="{{ route('add.userPost') }}">Add Post</a>
                             </div>
                         </div>
 
@@ -49,23 +49,11 @@
                                                     <p style="color:red">{{ $message }}</p>
                                                 @enderror
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="required">Subtitle</label>
-                                                <input type="text" name="subtitle" class="form-control"
-                                                    style="width: 100%;">
-                                                @error('subtitle')
-                                                    <p style="color:red">{{ $message }}</p>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="required">Tag</label>
                                                 <select class="form-control select2" name="tag_id[]" multiple="multiple"
                                                     data-placeholder="Select a tag" style="width: 100%;">
-                                                    <option>select</option>
+                                                   
                                                     @foreach ($getTag as $tag)
                                                         <option value="{{ $tag->id }}">
                                                             {{ $tag->tag_Name }}
@@ -76,27 +64,15 @@
                                                     <p style="color:red">{{ $message }}</p>
                                                 @enderror
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="required">Category</label>
-                                                <select class="form-control select2" name="category_id[]"
-                                                    multiple="multiple" data-placeholder="Select a Category"
+                                                <label class="required">Photo</label>
+                                                <input type="file" name="image" class="form-control"
                                                     style="width: 100%;">
-                                                    <option>select</option>
-                                                    @foreach ($get as $category)
-                                                        <option value="{{ $category->id }}">
-                                                            {{ $category->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                                @error('category_id')
+                                                @error('image')
                                                     <p style="color:red">{{ $message }}</p>
                                                 @enderror
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
+                                            {{-- <div class="form-group">
                                                 <label class="required">Status</label>
                                                 <select class="form-control select2" name="status"
                                                     data-placeholder="Select a status">
@@ -108,19 +84,35 @@
                                                 @error('status')
                                                     <p style="color:red">{{ $message }}</p>
                                                 @enderror
-                                            </div>
+                                            </div> --}}
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="required">Photo</label>
-                                                <input type="file" name="image" class="form-control"
+                                                <label class="required">Subtitle</label>
+                                                <input type="text" name="subtitle" class="form-control"
                                                     style="width: 100%;">
-                                                @error('image')
+                                                @error('subtitle')
                                                     <p style="color:red">{{ $message }}</p>
                                                 @enderror
                                             </div>
+                                            <div class="form-group">
+                                                <label class="required">Category</label>
+                                                <select class="form-control select2" name="category_id[]"
+                                                    multiple="multiple" data-placeholder="Select a Category"
+                                                    style="width: 100%;">
+                                                   
+                                                    @foreach ($get as $category)
+                                                        <option value="{{ $category->id }}">
+                                                            {{ $category->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                @error('category_id')
+                                                    <p style="color:red">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                          
                                         </div>
-
                                         <div class="col-md-12">
                                             <label class="required">Body</label>
                                             <textarea id="editor1" name="editor1" rows="10" cols="80"></textarea>
@@ -134,10 +126,10 @@
                     </div>
 
 
-                  
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                        <a href="{{ route('user.post') }}" class="btn btn-default">Back</a>
-                  
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a href="{{ route('user.post') }}" class="btn btn-default">Back</a>
+
                     </form>
 
                 </div>

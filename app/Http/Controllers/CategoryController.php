@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Crud;
-
+use App\Models\CategoryModel;
 use Illuminate\Http\Request;
 
-class CrudController extends Controller
+class CategoryController extends Controller
 {
 
     /**
@@ -17,7 +16,7 @@ class CrudController extends Controller
     public function index()
     {
         
-        $cruds = Crud::paginate(6);
+        $cruds = CategoryModel::paginate(6);
 
         return view('category/list', compact('cruds'));
     }
@@ -48,7 +47,7 @@ class CrudController extends Controller
             'category_name' => 'required',
         ]);
 
-        $crud = new Crud();
+        $crud = new CategoryModel();
         $crud->name =  $request->get('category_name');
         $crud->save();
         return redirect()->route('category.view');
@@ -73,7 +72,7 @@ class CrudController extends Controller
      */
     public function edit($id)
     {
-        $crud = Crud::find($id);
+        $crud = CategoryModel::find($id);
         return view('category/edit', compact('crud'));
     }
 
@@ -88,7 +87,7 @@ class CrudController extends Controller
     {
         $id = $request->id;
       
-        $crud = Crud::find($id);
+        $crud = CategoryModel::find($id);
         
         $crud->name =  $request->get('category_name');
 
@@ -104,7 +103,7 @@ class CrudController extends Controller
      */
     public function destroy($id)
     {
-        $crud=Crud::find($id);  
+        $crud=CategoryModel::find($id);  
         $crud->delete(); 
         return redirect()->route('category.view');
     }

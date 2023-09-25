@@ -37,7 +37,7 @@ $user_id = Auth::guard('uservalidate')->user()->id;
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="modal-title" align="center"><b>{{ $user_id }}Profile</b></h2>
+                    <h2 class="modal-title" align="center"><b>Profile</b></h2>
                 </div>
                 <div class="modal-body">
 
@@ -65,7 +65,7 @@ $user_id = Auth::guard('uservalidate')->user()->id;
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
                         <button id="storePermission" type="submit" href="{{ route('store.profile')}}"
                             class="btn btn-primary">Save</button>
-                            <a href="{{ route('forget.password.get') }}">Reset Password</a>
+                          
                     </div>
 
                 </div>

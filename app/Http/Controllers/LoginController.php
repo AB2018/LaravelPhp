@@ -53,9 +53,7 @@ class LoginController extends Controller
             $value = $request->session()->get('user');
            
         return view('dashboard');
-        
- 
-           // return redirect()->intended('dashboard');
+
         }
  
         return back()->withErrors([
@@ -64,8 +62,18 @@ class LoginController extends Controller
     }
 
     public function logOut(Request $request){
-        Auth::logout();
-        $request->session()->flush();
-    return redirect('/log');
+    //     Auth::logout();
+    //     $request->session()->flush();
+    // return redirect('/log');
+    if(Auth::guard()->check())
+    {
+        Auth::guard()->logout();
+        return redirect('/log');
+    }
+
+    $this->guard()->logout();
+    $request->session()->invalidate();
+
+    return $this->loggedOut($request) ?: redirect('/');
     }
 }

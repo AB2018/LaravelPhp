@@ -28,8 +28,8 @@
                                     <tr>
                                         <td>{{$index + $cruds->firstItem()}} </td>
                                         <td>{{ $crud->tag_Name }}</td>
-                                        <td>{{ dateFormat($crud->created_at) }}</td>
-                                        <td>{{ dateFormat($crud->updated_at) }}</td>
+                                        <td>{{dateFormat($crud->created_at,"d-m-Y") }}</td>
+                                        <td>{{ dateFormat($crud->updated_at,"d-m-Y")}}</td>
                                         @if (checkSlug('edit_tag') == true || checkSlug('delete_tag') == true)
                                             <td>
                                                 @if (checkSlug('edit_tag') == true)

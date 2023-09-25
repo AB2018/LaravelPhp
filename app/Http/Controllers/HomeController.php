@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AdminModel;
+use App\Models\CategoryModel;
 use App\Models\Crud;
 use App\Models\PostModel;
 use App\Models\TagModel;
@@ -20,10 +21,14 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
+        //$filterValue = $request->input('filter_value');
+        //$selectedValues = $request->input('filters', []); 
         $id = $request->category_id;
+        $tag_id = $request->tag_id;
         // dd($request->category_id);
-        $getCategory = Crud::all();
+        $getCategory = CategoryModel::all();
         $getTag = TagModel::all();
+       // dd($request->tag_id);
         if ($request->category_id) {
             $post_data = DB::table('post')
                 ->leftjoin('admin', 'post.posted_by_admin', '=', 'admin.id')
@@ -44,6 +49,7 @@ class HomeController extends Controller
                 )
                 ->where('post.status', '=', 'Published')
                 ->where('category_id', '=', $id)
+               // ->where('tag_id', '=', $tag_id)
                 ->groupBy('post.id')
                 ->get()->toArray();
         } else {
@@ -108,12 +114,15 @@ class HomeController extends Controller
      */
     public function filter(Request $request)
     {
+        $filterValue = $request->input('filter_value');
 
-
-        $id = $request->category_id;
-        $post_data = PostModel::with('category')->where('id', '=', $id)->get()->toArray();
+      //  $id = $request->category_id;
+       // dd($filterValue);
+        $post_data = PostModel::with('category')->where('id', '=', $filterValue)->get()->toArray();
+        return response()->json($post_data);
         // $post_data = Crud::with('post')->where('id','=',$id)->get()->toArray();
-        dd($post_data);
+       // dd($post_data);
+     //  return view('site/home', compact('post_data'));
     }
     public function show($id)
     {
@@ -154,3 +163,4 @@ class HomeController extends Controller
         //
     }
 }
+

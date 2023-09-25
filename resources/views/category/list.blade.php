@@ -30,8 +30,8 @@
                                     <tr>
                                         <td>{{$index + $cruds->firstItem()}} </td>
                                         <td>{{ $crud->name }}</td>
-                                        <td>{{dateFormat($crud->created_at) }}</td>
-                                        <td>{{ dateFormat($crud->updated_at)}}</td>
+                                        <td>{{dateFormat($crud->created_at,"d-m-Y") }}</td>
+                                        <td>{{ dateFormat($crud->updated_at,"d-m-Y")}}</td>
                                         @if (checkSlug('edit_category') == true || checkSlug('delete_category') == true)
                                         <td>
                                           @if(checkSlug('edit_category') == true )

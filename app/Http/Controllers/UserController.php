@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
-use Nette\Utils\Json;
+
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
+
 use Carbon\Carbon;
 
 
@@ -41,30 +41,33 @@ class UserController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
-    //$hashedPassword = Hash::make($request->password);
-        if (Auth::guard('uservalidate')->attempt($credentials)) {
 
-            if (!(Auth::guard('uservalidate')->user()->is_email_verified)) {
-                // dd("jhgvbjh");
-                $verifyMail = 'Please verify your email';
-                return Response::json($verifyMail);
-            } else {
-                // dd("kkkkkk");
+         $email = $request->email;
+           
+         $verifyEmail = UserModel::where('email', $email)
+            ->where('is_email_verified', 1)
+            ->first();
+        if(!$verifyEmail) {
+            $emailfail = 'Please verify your email';
+           return Response::json($emailfail);
+        }
+        else if (Auth::guard('uservalidate')->attempt($credentials)) {
+            //dd(Auth::guard('uservalidate')->user());
                 $id = Auth::guard('uservalidate')->user()->id;
                 $countPost = PostModel::with('usercheck_post')->where('posted_by', '=', $id)->count();
                 Session::put('postCount', $countPost);
                 $success = 'success';
                 return Response::json($success);
+                 
+                
             }
-        } else {
+         else {
             $fail = 'Email or password not match';
             return Response::json($fail);
         }
     }
 
-    public function postRegistration(Request $request)
-    {
-    }
+
     public function verifyAccount($token)
     {
         $verifyUser = UserVerify::where('token', $token)->first();
@@ -87,6 +90,8 @@ class UserController extends Controller
         return redirect()->route('home')->with('message', $message);
     }
 
+
+
     /**
      * Show the form for creating a new resource.
      *
@@ -95,6 +100,7 @@ class UserController extends Controller
     public function create(Request $request)
     {
         //  dd($request->all());
+
 
         $profile = $request->validate([
             'profession' => ['required'],
@@ -120,17 +126,24 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+       
         $id = $request->id;
         $request->validate([
-            'name' => 'required',
-            'contact' => 'required',
-            'email' => 'required|email|exists:user',
-            'password' => 'required|between:6,16|confirmed',
-            'password_confirmation' => 'required ',
+            'name' => 'required|regex:/^[a-zA-Z]+$/u|max:25',
+            'contact' => 'required|digits:10',
+            'email' => 'required|email',
+            'passwordd' => 'required|between:6,10',
+           // 'password_confirmation' => 'required,confirmed ',
         ]);
-        $hashedPassword = Hash::make($request->password);
-        $post_data = UserModel::where('email', '=',  $request->email);
+
+      
+        $post_data = UserModel::where('email', $request->email)->exists();
+        // $post_data = UserModel::where('email', '=',  $request->email);
+        //$post_data = UserModel::where('email', $request->email)->exists();
+
         if (!($post_data)) {
+
+            $hashedPassword = Hash::make($request->passwordd);
             $user_data = [
                 'name' => $request->name,
                 'contact' => $request->contact,
@@ -152,10 +165,10 @@ class UserController extends Controller
             });
             return back()->with('message', 'We have e-mailed you, Please verify the e-mail');
             //return redirect("/user/register")->withSuccess('Great! You have Successfully logged in');
-        }
-        else{
-          //  return Response::json(array('msg' => 'true'));
-            //return back()->with('emailExistMessage', 'Email alreasdy exists');
+        } else {
+
+            // return Response::json(array('msg' => 'true'));
+            return back()->with('emailExistMessage', 'Email alreasdy exists');
         }
     }
 
@@ -199,21 +212,27 @@ class UserController extends Controller
         //
     }
     public function logOut(Request $request)
-    {
-        Auth::logout();
+    {   
+        Auth::guard('uservalidate')->logout();
         $request->session()->flush();
+        $request->session()->regenerate();
         return redirect('/');
     }
 
-    public function userEmailCheck(Request $request)
+    public function checkEmail(Request $request)
     {
-    
-        $data = $request->all();
-        $userCount = UserModel::where('email', $data['email']);
-        if ($userCount->count()) {
-            return Response::json(array('msg' => 'true'));
+
+        $email = $request->email;
+        //dd($request->email);
+
+        $post_data = UserModel::where('email', $request->email)->exists();
+        $user = UserModel::where('email', $email)->first();
+        //dd($email);
+
+        if ($post_data == null) {
+            echo "true";
         } else {
-            return Response::json(array('msg' => 'false'));
+            echo "false";
         }
     }
 }

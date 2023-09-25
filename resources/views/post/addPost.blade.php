@@ -27,20 +27,9 @@
                             <p style="color:red">{{ $message }}</p>
                             @enderror
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Subtitle</label>
-                            <input type="text" name="subtitle" class="form-control" style="width: 100%;">
-                            @error('subtitle')
-                            <p style="color:red">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-md-6">
                         <div class="form-group">
                             <label class="required">Tag</label>
-                            <select class="form-control select2" name="tag_id[]" multiple="multiple" data-placeholder="Select a tag" style="width: 100%;">
+                            <select class="form-control select2 drop" name="tag_id[]" multiple="multiple" data-placeholder="Select a tag" style="width: 100%;">
                                 <option></option>
                                 @foreach ($getTag as $tag)
                                 <option  value="{{$tag->id}}">
@@ -52,11 +41,37 @@
                             <p style="color:red">{{ $message }}</p>
                             @enderror
                         </div>
+                        <div class="form-group">
+                            <label class="required">Status</label>
+                            <select class="form-control drop" id="status" name="status"
+                                data-placeholder="Select a status"  style="width: 100%">
+                                <option></option>
+
+                                <option value="1"
+                                    {{ isset($crud) ? ($crud->status == '1' ? 'selected' : '') : '' }}>
+                                    Active
+                                </option>
+                                <option value="0"
+                                    {{ isset($crud) ? ($crud->status == '0' ? 'selected' : '') : '' }}>
+                                    Inactive
+                                </option>
+                            </select>
+                            @error('status')
+                                <p style="color:red">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
+                            <label>Subtitle</label>
+                            <input type="text" name="subtitle" class="form-control" style="width: 100%;">
+                            @error('subtitle')
+                            <p style="color:red">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="form-group">
                             <label class="required">Category</label>
-                            <select class="form-control select2" name="category_id[]" multiple="multiple" data-placeholder="Select a Category" style="width: 100%;">
+                            <select class="form-control select2 drop" name="category_id[]" multiple="multiple" data-placeholder="Select a Category" style="width: 100%;">
                                 <option></option>
                                 @foreach ($get as $category)
                                 <option value="{{$category->id}}">
@@ -68,23 +83,6 @@
                             <p style="color:red">{{ $message }}</p>
                             @enderror
                         </div>
-                    </div>
-                  
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="required">Status</label>
-                            <select class="form-control select2" name="status" data-placeholder="Select a status">
-
-                                <option></option>
-                                <option value="Published">Published</option>
-                                <option value="Not Published">Not Published</option>
-                            </select>
-                            @error('status')
-                            <p style="color:red">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-md-6">
                         <div class="form-group">
                             <label class="required">Photo</label>
                             <input type="file" name="image" class="form-control" style="width: 100%;">
@@ -95,11 +93,13 @@
                     </div>
 
                     <div class="col-md-12">
+                        <div class="form-group">
                         <label class="required">Body</label>
                         <textarea id="editor1" name="editor1" rows="10" cols="80"></textarea>
                         @error('editor1')
                         <p style="color:red">{{ $message }}</p>>
                         @enderror
+                        </div>
                     </div>
                 </div>
 
@@ -123,8 +123,6 @@
 <script>
     $(".select2").select2();
     $(function() {
-        // Replace the <textarea id="editor1"> with a CKEditor
-        // instance, using default configuration.
         CKEDITOR.replace('editor1');
     });
 </script>

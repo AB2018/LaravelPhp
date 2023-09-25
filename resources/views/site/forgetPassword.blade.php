@@ -67,7 +67,12 @@
                                   @endif
                               </div>
                           </div>
+                          <div class="form-group col-xs-12">
+                       
+                            
+                        </div>
                           <div class="col-md-6 offset-md-4">
+                            <a type="submit" href="{{route('home')}}" class="btn btn-primary">Back</a>
                               <button type="submit" class="btn btn-primary">
                                   Send Password Reset Link
                               </button>

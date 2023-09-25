@@ -18,7 +18,6 @@ class IsVerifyEmail
     public function handle(Request $request, Closure $next)
     {
         if (!Auth::guard('uservalidate')->user()->is_email_verified) {
-            dd("jgvjh");
             auth()->logout();
             return redirect()->route('home')
                     ->with('message', 'You need to confirm your account. We have sent you an activation code, please check your email.');

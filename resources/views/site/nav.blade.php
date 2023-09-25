@@ -70,13 +70,15 @@
                 <div class="modal-header">
                     <h2 class="modal-title" align="center"><b>Login</b></h2>
                 </div>
+                
                 <div class="modal-body">
                   
                     @csrf
                     <div class="form-group has-feedback">
                         <label class="required">Email</label>
                         <input type="email" class="form-control" name="email" id="emailcheck" placeholder="Email">
-                        <span class="text-danger" id="email"></span>
+                        <span class="text-danger" style="font-size: 14px" id="availability"></span>
+                        <span class="text-danger"  id="email"></span>
                         @error('email')
                             <p style="color:red">{{ $message }}</p>
                         @enderror
@@ -90,16 +92,14 @@
                             <p style="color:red">{{ $message }}</p>
                         @enderror
                     </div>
-                    <span id="availability"></span>
+                    {{-- <span id="availability"></span> --}}
                     <div class="form-group row">
                         <div class="col-md-6 offset-md-4">
                             <div class="checkbox">
                                 <label>
                                     
-                                    <a href="{{ route('forget.password.get') }}">Reset Password</a>
-                                    <label>
-                                        <input type="checkbox"> Remember Me
-                                      </label>
+                                    <a href="{{ route('forget.password.get') }}">Forgot Password?</a>
+                                    
                                 </label>
                             </div>
                         </div>
@@ -123,6 +123,7 @@
 <script>
     var loginCheck = "{{ route('user.login') }}";
     var token = "{{ csrf_token() }}";
+    
 </script>
 <script src="{{ asset('site/vendor/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('site/validation/ajax.js') }}"></script>

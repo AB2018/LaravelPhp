@@ -23,8 +23,8 @@ function checkSlug($slug)
     return false;
 }
 
-function dateFormat($date){
+function dateFormat($date,$formate){
     
-  return  \Carbon\Carbon::parse($date)->format("d-m-Y");
+  return  \Carbon\Carbon::parse($date)->format($formate);
 
 }

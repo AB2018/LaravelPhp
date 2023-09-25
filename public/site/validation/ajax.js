@@ -29,15 +29,15 @@ $('#login').click(function () {
 
         success: function (result) {
             if (result == 'success') {
-                window.location.reload();
+                // console.log('success');
+               window.location.reload();
                 // window.location = "/";
             }
-            else if(result == 'verifyMail') {
-                $('#availability').html('<label class="text-danger">Please Verify your email</label>');
+            else if(result == 'emailfail'){
+                $('#availability').html('Please Verify your email');
             }
-            else if(result == 'faile'){
-                $('#availability').html('<label class="text-danger">Email or Password not match</label>');
-            }
+            else
+            $('#password').html('Incorrect Password');
         }
     })
 
