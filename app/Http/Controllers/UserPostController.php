@@ -56,7 +56,6 @@ class UserPostController extends Controller
             'title' => 'required',
             'editor1' => 'required',
             'image' => 'required | mimes:jpg,jpeg,png',
-            'status' => 'required',
             'subtitle' => 'required',
             'category_id' => 'required',
             'tag_id' => 'required',

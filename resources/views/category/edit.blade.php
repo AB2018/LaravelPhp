@@ -23,7 +23,7 @@
           <div class="box-body">
             <div class="form-group">
               <label for="category_name">Category Name</label>
-              <input type="text" class="form-control" name="category_name" id="category_name" value="{{$crud->name}}">
+              <input type="text" class="form-control" style="width: 50%"  name="category_name" id="category_name" value="{{$crud->name}}">
             </div>
           </div>
           <!-- /.box-body -->

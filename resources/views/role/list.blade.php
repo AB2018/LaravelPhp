@@ -46,6 +46,7 @@
                                             }
                                         @endphp
                                         </td>
+                                      
                                         <td>
                                             @php
                                                 $per_name = [];

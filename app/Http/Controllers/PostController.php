@@ -46,7 +46,7 @@ class PostController extends Controller
 
 
          if($request->ajax()){
-            $cruds = PostModel::where('status', 'Published')->get()->toArray();
+            $cruds = PostModel::where('status', '1')->get()->toArray();
             dd($cruds);
             
          }
@@ -73,12 +73,13 @@ class PostController extends Controller
 
     public function published(Request $request)
     {
-        $published = 'Published';
-        $notpublished = 'Not Published';
+       // dd($request);
+        $published = '1';
+        $notpublished = '0';
         $id = $request->id;
-       //dd($request->get('status') );
+      // dd($request->get('status') );
 
-        if ($request->get('status') == "Published") {
+        if ($request->get('status') == "1") {
            
         $data['status'] = $published;
         PostModel::where('id', $id)->update($data);
@@ -103,6 +104,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+       
         
         
         $admin_id = Auth::user()->id;

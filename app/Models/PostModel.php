@@ -34,7 +34,7 @@ class PostModel extends Model
         return $this->hasMany('App\Models\UserModel','id','posted_by');
    }
    public function likes(){
-    return $this->hasMany('App\LikeDislike','id','post_id')->sum('type')->where('type',1);
+    return $this->hasMany('App\Models\LikeDislikeModel','id','post_id')->sum('type')->where('type',1);
 }
    
 }

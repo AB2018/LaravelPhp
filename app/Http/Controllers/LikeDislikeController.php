@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Post;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class LikeDislikeController extends Controller
 {
@@ -17,39 +18,48 @@ class LikeDislikeController extends Controller
      */
     public function index(Request $request)
     {
-       
+
         $profile = $request->all();
-        dd($profile);
-
-    //    $id = Auth::guard('uservalidate')->user()->id;
-    //     UserModel::where('id', $id)
-    //     ->update($profile);
-    //     $success = 'success';
-    //     return Response::json($success); 
+       
     }
-    public function likePost(Request $request, $postId)
-    { 
-        $userId =Auth::guard('uservalidate')->user()->id;
-      //  dd($userId);
-        $postId = $request->id;
-        $existingInteraction = LikeDislikeModel::where('user_id', $userId)
-            ->where('post_id', $postId)
-            ->first();
+    public function likeUnlikePost(Request $request, $postId)
+    {
+        $userId = Auth::guard('uservalidate')->user()->id;
 
-        if (!$existingInteraction) {
-           // dd("jhbj");
+        $postId = $request->id;
+        $type = $request->likeUnlike;
+        
+        // $existing = LikeDislikeModel::where('user_id', $userId)
+        //     ->where('post_id', $postId)
+        //     ->first();
+        $userlikeUnlike = DB::table('like_dislike')
+            ->select('like_dislike.type')
+            ->where('post_id', $postId)
+            ->where('user_id', $userId)
+            ->first();
+           // dd($userlikeUnlike);
+        if (!$userlikeUnlike) {
+           // dump("exist");
             LikeDislikeModel::create([
                 'user_id' => $userId,
                 'post_id' => $postId,
-                'type' => 1,
+                'type' => $type,
                 'action_on' => Carbon::now()
-               
+
             ]);
+            $likeData = LikeDislikeModel::where('post_id', $postId)->where('type', $type)->count();
 
-            return response()->json(['message' => 'Post liked successfully']);
+            return response()->json(['message' => $likeData, 'type' => $type]);
+        } else if ($userlikeUnlike->type == $type) {
+           // dump("second");
+            $deleteData = LikeDislikeModel::where('post_id', $postId)->where('user_id', $userId)->delete();
+            return response()->json(['message' => $deleteData, 'type' => $type]);
+        } else {
+           // dump("third");
+            $unlikeData = LikeDislikeModel::where('post_id', $postId)->where('user_id', $userId)->update(["type" => $type]);
+            return response()->json(['message' => $unlikeData, 'type' => $type]);
         }
-
-        return response()->json(['message' => 'You have already liked this post'], 409);
+      //  dd("end");
     }
 
     /**

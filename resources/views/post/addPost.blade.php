@@ -49,11 +49,11 @@
 
                                 <option value="1"
                                     {{ isset($crud) ? ($crud->status == '1' ? 'selected' : '') : '' }}>
-                                    Active
+                                    Published
                                 </option>
                                 <option value="0"
                                     {{ isset($crud) ? ($crud->status == '0' ? 'selected' : '') : '' }}>
-                                    Inactive
+                                    Not Published
                                 </option>
                             </select>
                             @error('status')

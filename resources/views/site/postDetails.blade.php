@@ -12,11 +12,6 @@
                     <h1>{{$post_data[0]['title']}}</h1>
                     <h2 class="subheading">{{$post_data[0]['subtitle']}}</h2>
                 
-                    <span class="meta">Posted by  {{$post_data[0]['admin_post'][0]['name']}}  on  {{ \Carbon\Carbon::parse($post_data[0]['admin_post'][0]['created_at'])->format("F j, Y")}}</span>
-                    <a class="fa  fa-thumbs-up" style='font-size:20px;color:rgb(110, 207, 90)' href=""></a>
-                    <a class="fa  fa-thumbs-down" style='font-size:20px;color:rgb(228, 136, 75)' href=""></a>
-                   
-                  
                 </div> 
             </div>
         </div>

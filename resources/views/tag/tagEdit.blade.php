@@ -23,11 +23,9 @@
               <div class="box-body">
                 <div class="form-group">
                   <label for="tag_name">Tag Name</label>
-                  <input type="text" class="form-control" name="tag_name" id="tag_name" value="{{$crud->tag_Name}}">
+                  <input type="text" class="form-control" style="width: 50%"  name="tag_name" id="tag_name" value="{{$crud->tag_Name}}">
                 </div>
               </div>
-              <!-- /.box-body -->
-
               <div class="box-footer">
                 <button type="submit" class="">Submit</button>
               </div>

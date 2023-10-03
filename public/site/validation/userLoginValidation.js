@@ -9,8 +9,10 @@
 //         password : "required",
 
 // 	}, messages: {
-
-//         email: "Please enter email",
+//         email: {
+//             required: "Email is required!",
+//             email: "Enter A Valid E-Mail !..",
+//         },
 //         password: "Please enter your password",
 	
 // 	},

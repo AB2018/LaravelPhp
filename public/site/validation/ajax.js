@@ -12,11 +12,17 @@ $('#login').click(function () {
         $('#email').html('Email is Required');
 
     }
+    else{
+        $('#email').html('');
+    }
     if (password== '') {
 
         $('#password').html('Password is Required');
 
-    };
+    }
+    else{
+        $('#password').html('');
+    }
     $.ajax({
         method: "POST",
         url: loginCheck,
@@ -33,11 +39,9 @@ $('#login').click(function () {
                window.location.reload();
                 // window.location = "/";
             }
-            else if(result == 'emailfail'){
-                $('#availability').html('Please Verify your email');
+            else{
+                $('#availability').html(result);
             }
-            else
-            $('#password').html('Incorrect Password');
         }
     })
 
@@ -74,7 +78,7 @@ $('#storePermission').click(function () {
 });
 
 $('.status_type').on('change', function () {
-    var status = $(this).prop('checked') == true ? 'Published' : 'Not Published'; 
+    var status = $(this).prop('checked') == true ? '1' : '0'; 
     // var status = $('.status_type').val();
     var id =  $(this).attr("data-id");
     // console.log(status);

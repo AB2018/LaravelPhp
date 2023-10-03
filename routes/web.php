@@ -95,10 +95,7 @@ Route::get('/listingpost', function () {
     return view('site/list');
 });
 
-// Route::get('/', function () {
-   
-//     return view('site/home');
-// });
+
 Route::post('/check/email', [UserController::class,'checkEmail'])->name('check.email');
 Route::post('/register', [UserController::class,'store'])->name('user.store');
 Route::post('/login', [UserController::class, 'authenticate'])->name('user.login');
@@ -137,8 +134,16 @@ Route::get('account/verify/{token}', [UserController::class, 'verifyAccount'])->
 
 // Route::get('/filter-data', [HomeController::class, 'index'])->name('filter.data');
 //Route::post('/like/{id}', [LikeDislikeController::class, 'like'])->name('like');
-Route::post('/like/{id}', [LikeDislikeController::class, 'likePost'])->name('posts.like');
+Route::post('/like/{id}', [LikeDislikeController::class, 'likeUnlikePost'])->name('posts.like');
 Route::post('/verify/email', [UserController::class,'checkEmail'])->name('check.email');
+Route::post('/homeCategory', [HomeController::class,'index']);
+
+Route::get('/array', function () {
+   
+    return view('/');
+});
+  
+
 
 
 

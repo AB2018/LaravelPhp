@@ -8,14 +8,7 @@
                 <div class="box">
                     <div class="box-header with-border">
                         <h3 class="box-title">Post List</h3>
-                        {{-- </br>
-                        <label class="switch">
-                           <input type="hidden" id="id" name="id" value="{{$crud->id}}"> 
-                            <input class="status" name="status" id="status" data-on="Published"
-                            data-off="Not Published" type="checkbox">
-
-                            <span class="slider"> </span>
-                        </label> --}}
+                   
                         <div class="box-tools pull-right">
 
 
@@ -50,9 +43,9 @@
                                             <td><label class="switch" >
                                                     {{-- <input type="hidden" id="id" name="id" value="{{$crud->id}}"> --}}
                                                     <input class="status_type" name="status_type" id="status_type"
-                                                        data-id="{{ $crud->id }}" data-on="Published"
-                                                        data-off="Not Published" type="checkbox" 
-                                                        {{ $crud->status == 'Published' ? 'checked' : '' }}>
+                                                        data-id="{{ $crud->id }}" data-on="1"
+                                                        data-off="0" type="checkbox" 
+                                                        {{ $crud->status == '1' ? 'checked' : '' }}>
 
                                                     <span class="slider"></span>
                                                 </label></td>

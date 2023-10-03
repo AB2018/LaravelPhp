@@ -19,15 +19,15 @@
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <a type="submit" class="btn btn-default" href="{{ route('add.userPost') }}">Add Post</a>
-          
+
 
             @foreach ($cruds as $crud)
                 <a href="{{ route('post.details', ['id' => $crud['id']]) }}">
                     <div class="post-preview">
                         <div class="box-tools pull-right">
 
-                            @if ($crud['status'] == 'Published')
-                                <span class="fa fa-eye" style='color:#0e9e3e'> {{ $crud['status'] }}</span>
+                            @if ($crud['status'] == '1')
+                                <span class="fa fa-eye" style='color:#0e9e3e'> Published</span>
                             @else
                                 <span class="fa fa-eye-slash" style='font-size:20px;color:#e7533f'> Private</span>
                             @endif
@@ -46,13 +46,14 @@
                         {{ $crud['usercheck_post'][0]['name'] }}
                     </a> {{ \Carbon\Carbon::parse($crud['usercheck_post'][0]['created_at'])->format('F j, Y') }}
                 </p>
+
                 <hr>
             @endforeach
         </div>
     </div>
     </div>
     <!-- Pager -->
-  
+
     </div>
     </div>
     </div>

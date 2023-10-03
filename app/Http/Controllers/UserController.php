@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Session;
 
 use Illuminate\Support\Str;
 
-use Carbon\Carbon;
+
 
 
 use Illuminate\Support\Facades\Mail;
@@ -42,26 +42,27 @@ class UserController extends Controller
             'password' => ['required'],
         ]);
 
-         $email = $request->email;
-           
-         $verifyEmail = UserModel::where('email', $email)
+        $email = $request->email;
+        $checkEmail = UserModel::where('email', $email)->exists();
+
+
+        $verifyEmail = UserModel::where('email', $email)
             ->where('is_email_verified', 1)
             ->first();
-        if(!$verifyEmail) {
+        if (!$checkEmail) {
+            $emailNotExist = 'Email does not exist';
+            return Response::json($emailNotExist);
+        } else if (!$verifyEmail) {
             $emailfail = 'Please verify your email';
-           return Response::json($emailfail);
-        }
-        else if (Auth::guard('uservalidate')->attempt($credentials)) {
+            return Response::json($emailfail);
+        } else if (Auth::guard('uservalidate')->attempt($credentials)) {
             //dd(Auth::guard('uservalidate')->user());
-                $id = Auth::guard('uservalidate')->user()->id;
-                $countPost = PostModel::with('usercheck_post')->where('posted_by', '=', $id)->count();
-                Session::put('postCount', $countPost);
-                $success = 'success';
-                return Response::json($success);
-                 
-                
-            }
-         else {
+            $id = Auth::guard('uservalidate')->user()->id;
+            $countPost = PostModel::with('usercheck_post')->where('posted_by', '=', $id)->count();
+            Session::put('postCount', $countPost);
+            $success = 'success';
+            return Response::json($success);
+        } else {
             $fail = 'Email or password not match';
             return Response::json($fail);
         }
@@ -126,17 +127,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-       
+
         $id = $request->id;
         $request->validate([
             'name' => 'required|regex:/^[a-zA-Z]+$/u|max:25',
             'contact' => 'required|digits:10',
             'email' => 'required|email',
             'passwordd' => 'required|between:6,10',
-           // 'password_confirmation' => 'required,confirmed ',
+            // 'password_confirmation' => 'required,confirmed ',
         ]);
 
-      
+
         $post_data = UserModel::where('email', $request->email)->exists();
         // $post_data = UserModel::where('email', '=',  $request->email);
         //$post_data = UserModel::where('email', $request->email)->exists();
@@ -212,11 +213,18 @@ class UserController extends Controller
         //
     }
     public function logOut(Request $request)
-    {   
-        Auth::guard('uservalidate')->logout();
-        $request->session()->flush();
-        $request->session()->regenerate();
-        return redirect('/');
+    {
+        if (Auth::guard('uservalidate')->check()) {
+            Auth::guard('uservalidate')->logout();
+            return redirect('/');
+        }
+
+        // $this->guard('uservalidate')->logout();
+        // $request->session()->invalidate();
+        // Auth::guard('uservalidate')->logout();
+        // $request->session()->flush();
+        // $request->session()->invalidate();
+        // return redirect('/');
     }
 
     public function checkEmail(Request $request)

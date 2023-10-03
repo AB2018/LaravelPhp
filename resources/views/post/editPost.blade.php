@@ -83,8 +83,8 @@
                                 <select class="form-control select2" name="status" data-placeholder="Select a status"  >
                                     <option >select</option>
                                
-                                    <option value="Published" {{ isset($crud)? ($crud->status == 'Published'? 'selected': '') : '' }} >Published</option>
-                                    <option value="Not Published" {{ isset($crud)? ($crud->status == 'Not Published'? 'selected': '') : '' }}>Not Published</option>
+                                    <option value="1" {{ isset($crud)? ($crud->status == '1'? 'selected': '') : '' }} >Published</option>
+                                    <option value="0" {{ isset($crud)? ($crud->status == '0'? 'selected': '') : '' }}>Not Published</option>
                                 </select>
                                 @error('status')
                                 <p style="color:red">{{ $message }}</p>
