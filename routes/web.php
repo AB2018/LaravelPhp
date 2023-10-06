@@ -41,6 +41,7 @@ Route::get('post/add', [PostController::class,'create'])->name('post.show');
 Route::get('post/delete/{id}', [PostController::class,'destroy'])->name('post.destroy')->middleware('CheckPermission:delete_post');
 Route::get('post/edit/{id}', [PostController::class,'edit'])->name('post.edit')->middleware('CheckPermission:edit_post');
 Route::post('posts/update', [PostController::class,'update'])->name('posts.update')->middleware('CheckPermission:edit_post');
+Route::post('/post/filter', [PostController::class,'index'])->name('post.filter');
 
 
 
@@ -99,7 +100,8 @@ Route::get('/listingpost', function () {
 Route::post('/check/email', [UserController::class,'checkEmail'])->name('check.email');
 Route::post('/register', [UserController::class,'store'])->name('user.store');
 Route::post('/login', [UserController::class, 'authenticate'])->name('user.login');
-Route::get('/', [HomeController::class,'index'])->name('home');
+//Route::get('/', [HomeController::class,'index'])->name('home');
+Route::match(['get', 'post'], '/', [HomeController::class, 'index'])->name('home');
 Route::get('/post/details/{id}', [HomeController::class,'show'])->name('post.details');
 Route::get('/user/register', [HomeController::class,'register'])->name('user.register');
 Route::get('/user/logout', [UserController::class,'logOut'])->name('user.logout');
@@ -134,9 +136,9 @@ Route::get('account/verify/{token}', [UserController::class, 'verifyAccount'])->
 
 // Route::get('/filter-data', [HomeController::class, 'index'])->name('filter.data');
 //Route::post('/like/{id}', [LikeDislikeController::class, 'like'])->name('like');
-Route::post('/like/{id}', [LikeDislikeController::class, 'likeUnlikePost'])->name('posts.like');
+Route::post('/like', [LikeDislikeController::class, 'likeUnlikePost'])->name('posts.like');
 Route::post('/verify/email', [UserController::class,'checkEmail'])->name('check.email');
-Route::post('/homeCategory', [HomeController::class,'index']);
+Route::post('post/list', [PostController::class,'index'])->name('post.view');
 
 Route::get('/array', function () {
    

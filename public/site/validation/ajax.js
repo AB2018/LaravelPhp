@@ -1,7 +1,46 @@
-// $('#test').click(function () {
-//     alert("hii");
+function likeUnlikePost(type, id) {
+  console.log(id);
+    $.ajax({
+        url:likeDislike,
+        type: 'POST',
+        data: {
+            likeUnlike: type,
+            post_id: id,
+            _token: token
+        },
+        success: function(message) {
+    
+            $('#like_count' + id).text(message.likeData);
+            $('#dislike_count' + id).text(message.dislikeData);
 
-// });
+            if (message.typeOfUser == 1) {
+                console.log("hello green");
+                $('#likebtn' + id).css({
+                    'color': 'Green'
+                });
+            } else {
+                $('#likebtn' + id).css({
+                    'color': 'grey'
+                });
+            }
+            if (message.typeOfUser == 0) {
+                $('#disbtn' + id).css({
+                    'color': 'red'
+                });
+            } else {
+                $('#disbtn' + id).css({
+                    'color': 'grey'
+                });
+            }
+
+
+
+        },
+        error: function(error) {
+            console.error('Error liking post:', error);
+        }
+    });
+}
 
 
 $('#login').click(function () {
@@ -81,6 +120,16 @@ $('.status_type').on('change', function () {
     var status = $(this).prop('checked') == true ? '1' : '0'; 
     // var status = $('.status_type').val();
     var id =  $(this).attr("data-id");
+    console.log(status);
+    // if(status == 1){
+        
+    //     confirm("Published this post?");
+        
+    //  }
+    //  else{
+    //     confirm("UnPublished this post?");
+        
+    //  }
     // console.log(status);
      console.log(id);
 
@@ -94,28 +143,14 @@ $('.status_type').on('change', function () {
 
             success: function(data){
              console.log('success');
+            
           }
         });
     
 });
 
-$('.status').on('change', function () {
-    var status = $(this).prop('checked') == true ? 'Published' : 'Not Published'; 
-     console.log(id);
-        $.ajax({
-            method:'get',
-            url:showPublishedPost,
-            data:{
-                'status': status, 
-            "_token": token,},
 
-            success: function(data){
-             console.log('success');
-          }
-        });
-    
-});
-console.log("jhvjv");
+
 
 $('.like').click(function () {
    

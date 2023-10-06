@@ -10,6 +10,7 @@ use App\Models\PostTagModel;
 use App\Models\TagModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class UserPostController extends Controller
@@ -107,13 +108,131 @@ class UserPostController extends Controller
      */
     public function show()
     {
-
-        $id = Auth::guard('uservalidate')->user()->id;
-      
-      // dd( Session::get('postCount'));
-        $cruds = PostModel::with('usercheck_post')->where('posted_by','=',$id)->get()->toArray();
+        
+            //  dd("jhbh");
+            // $id = $request->category_id;
+            // $tag_id = $request->tag_id;
+            // $getCategory = CategoryModel::all();
+            // $getTag = TagModel::all();
+            // $post = PostModel::all();
+            $userid = Auth::guard('uservalidate')->user()->id;
     
-        return view('site/userPost',compact('cruds'));
+            $datas = DB::table('post')
+                ->leftjoin('admin', 'post.posted_by_admin', '=', 'admin.id')
+                ->leftJoin('user', 'post.posted_by', '=', 'user.id')
+                ->join('post_category', 'post.id', '=', 'post_category.post_id')
+                ->join('category', 'category.id', '=', 'post_category.category_id')
+                ->join('post_tag', 'post.id', '=', 'post_tag.post_id')
+                ->join('tag', 'tag.id', '=', 'post_tag.tag_id')
+                // ->leftjoin('like_dislike', 'like_dislike.post_id', '=', 'post.id')
+                ->select(
+                    'post.id',
+                    'post.title',
+                    'post.status',
+                    'post.subtitle',
+                    'post.created_at',
+                    'user.id as user_id',
+                    'tag.tag_name',
+                    'category.name as category_name',
+                    //'like_dislike.type',
+                    DB::raw('IF(admin.name is null, user.name, admin.name) as name'),
+    
+                );
+    
+            //$userid = 31;
+            $userlikeUnlike = [];
+            if (Auth::guard('uservalidate')->user()) {
+                $userid = Auth::guard('uservalidate')->user()->id;
+                $userlikeUnlike = DB::table('like_dislike')
+                    ->select('post_id', 'like_dislike.type')
+                    ->where('user_id', $userid)
+                    ->get()->toArray();
+            }
+    
+            $likeUnlike = DB::table('like_dislike')
+                ->select('post_id', 'like_dislike.type', DB::raw('sum(case when type = 1 then 1 else 0 end) as like_count,
+                     sum(case when type = 0 then 1 else 0 end) as dis_like_count'))
+                ->groupBy('post_id')
+                ->get()->toArray();
+           
+    
+            $datas = $datas->where('post.posted_by', $userid)
+                ->get();
+    
+            $post_data = [];
+            $likeUnlikedata1 = [];
+            $userlikeUnlike1  = [];
+    
+            foreach ($userlikeUnlike as $userlikeUnlikeData) {
+    
+    
+                $userlikeUnlike1[$userlikeUnlikeData->post_id] =  [
+    
+                    'type' => $userlikeUnlikeData->type,
+    
+                ];
+            }
+            //  dd($userlikeUnlike1);
+            foreach ($likeUnlike as $likeUnlikeData) {
+    
+    
+                $likeUnlikedata1[$likeUnlikeData->post_id] =  [
+    
+                    'like_count' => $likeUnlikeData->like_count,
+                    'dis_like_count' => $likeUnlikeData->dis_like_count
+                ];
+            }
+            //dd($likeUnlikedata1);
+    
+            foreach ($datas as $data) {
+                //dd($likeUnlikedata);
+                if (!(array_key_exists($data->id, $post_data))) {
+                    $post = [
+                        'id' => $data->id,
+                        'title' => $data->title,
+                        'subtitle' => $data->subtitle,
+                        'status' =>$data->status,
+                        'created_at' => $data->created_at,
+                        'user_id' => $data->user_id,
+                        'tag_name' => [$data->tag_name],
+                        'name' => $data->name,
+                        'category_name' => [$data->category_name],
+                        'like_count' => 0,
+                        'dis_like_Count' => 0,
+                        'type' => null,
+    
+    
+                    ];
+    
+                    if (array_key_exists($data->id, $likeUnlikedata1)) {
+    
+                        $post['like_count'] =  $likeUnlikedata1[$data->id]['like_count'];
+                        $post['dis_like_Count'] =  $likeUnlikedata1[$data->id]['dis_like_count'];
+                    } else {
+                        $post;
+                        //  dd($post);
+                    }
+    
+                    if (array_key_exists($data->id, $userlikeUnlike1)) {
+                        //  dd("ghgkjj");
+    
+                        $post['type'] =  $userlikeUnlike1[$data->id]['type'];
+                    } else {
+                        $post;
+                    }
+                    $post_data[$data->id] = $post;
+                }
+    
+    
+    
+                if (!(in_array($data->tag_name, $post_data[$data->id]['tag_name']))) {
+                    array_push($post_data[$data->id]['tag_name'], $data->tag_name);
+                } else if (!(in_array($data->category_name, $post_data[$data->id]['category_name']))) {
+                    array_push($post_data[$data->id]['category_name'], $data->category_name);
+                }      
+        }   
+    
+        return view('site/userPost',compact('post_data'));
     }
     /**
      * Show the form for editing the specified resource.

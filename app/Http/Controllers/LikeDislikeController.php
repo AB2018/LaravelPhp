@@ -9,6 +9,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+use function PHPUnit\Framework\isEmpty;
+
 class LikeDislikeController extends Controller
 {
     /**
@@ -22,23 +24,22 @@ class LikeDislikeController extends Controller
         $profile = $request->all();
        
     }
-    public function likeUnlikePost(Request $request, $postId)
+    public function likeUnlikePost(Request $request)
     {
+        //dd($request);
+       
         $userId = Auth::guard('uservalidate')->user()->id;
 
-        $postId = $request->id;
+        $postId = $request->post_id;
         $type = $request->likeUnlike;
-        
-        // $existing = LikeDislikeModel::where('user_id', $userId)
-        //     ->where('post_id', $postId)
-        //     ->first();
+       
         $userlikeUnlike = DB::table('like_dislike')
             ->select('like_dislike.type')
             ->where('post_id', $postId)
             ->where('user_id', $userId)
             ->first();
-           // dd($userlikeUnlike);
         if (!$userlikeUnlike) {
+          
            // dump("exist");
             LikeDislikeModel::create([
                 'user_id' => $userId,
@@ -47,19 +48,35 @@ class LikeDislikeController extends Controller
                 'action_on' => Carbon::now()
 
             ]);
-            $likeData = LikeDislikeModel::where('post_id', $postId)->where('type', $type)->count();
-
-            return response()->json(['message' => $likeData, 'type' => $type]);
+           
+          $message = "added like or dislike";
         } else if ($userlikeUnlike->type == $type) {
+           
            // dump("second");
             $deleteData = LikeDislikeModel::where('post_id', $postId)->where('user_id', $userId)->delete();
-            return response()->json(['message' => $deleteData, 'type' => $type]);
+           // return response()->json(['message' => $deleteData, 'type' => $type]);
+           $message = "remove like or dislike";
         } else {
-           // dump("third");
+        
             $unlikeData = LikeDislikeModel::where('post_id', $postId)->where('user_id', $userId)->update(["type" => $type]);
-            return response()->json(['message' => $unlikeData, 'type' => $type]);
+           // return response()->json(['message' => $unlikeData, 'type' => $type]);
+           $message = "update like or dislike";
         }
-      //  dd("end");
+        $likeData = LikeDislikeModel::where('post_id', $postId)->where('type', 1)->count();
+        $dislikeData = LikeDislikeModel::where('post_id', $postId)->where('type', 0)->count();
+        $userType = LikeDislikeModel:: select('type')
+        ->where('post_id', $postId)
+        ->where('user_id', $userId)
+        ->get()->toArray();
+        
+        if(empty($userType)){
+            $typeOfUser = null;   
+        }
+        else{
+            $typeOfUser = $userType[0]['type'];
+        }
+        
+        return response()->json(['message'=>$message, 'likeData' => $likeData, 'dislikeData' => $dislikeData ,'typeOfUser'=>$typeOfUser]);
     }
 
     /**

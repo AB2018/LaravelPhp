@@ -8,7 +8,7 @@ use App\Models\UserModel;
 use App\Models\UserVerify;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
 
@@ -29,6 +29,7 @@ class UserController extends Controller
      */
     public function index()
     {
+        
         $id = Auth::guard('uservalidate')->user()->id;
         $cruds = UserModel::find($id)->get()->toArray();
         return view('/site/profile', compact('cruds'));

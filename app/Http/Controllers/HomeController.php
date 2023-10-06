@@ -21,6 +21,32 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function query()
+    {
+        $datas = DB::table('post')
+            ->leftjoin('admin', 'post.posted_by_admin', '=', 'admin.id')
+            ->leftJoin('user', 'post.posted_by', '=', 'user.id')
+            ->join('post_category', 'post.id', '=', 'post_category.post_id')
+            ->join('category', 'category.id', '=', 'post_category.category_id')
+            ->join('post_tag', 'post.id', '=', 'post_tag.post_id')
+            ->join('tag', 'tag.id', '=', 'post_tag.tag_id')
+            // ->leftjoin('like_dislike', 'like_dislike.post_id', '=', 'post.id')
+            ->select(
+                'post.id',
+                'post.title',
+                'post.status',
+                'post.subtitle',
+                'post.created_at',
+                'user.id as user_id',
+                'tag.tag_name',
+                'category.name as category_name',
+                //'like_dislike.type',
+                DB::raw('IF(admin.name is null, user.name, admin.name) as name'),
+
+            );
+    }
+
     public function index(Request $request)
     {
         //  dd("jhbh");
@@ -52,51 +78,53 @@ class HomeController extends Controller
 
             );
 
+        //$userid = 31;
+        $userlikeUnlike = [];
+        if (Auth::guard('uservalidate')->user()) {
             $userid = Auth::guard('uservalidate')->user()->id;
-          //  dd($userid);
+            $userlikeUnlike = DB::table('like_dislike')
+                ->select('post_id', 'like_dislike.type')
+                ->where('user_id', $userid)
+                ->get()->toArray();
+        }
+
+
         $likeUnlike = DB::table('like_dislike')
             ->select('post_id', 'like_dislike.type', DB::raw('sum(case when type = 1 then 1 else 0 end) as like_count,
                  sum(case when type = 0 then 1 else 0 end) as dis_like_count'))
             ->groupBy('post_id')
             ->get()->toArray();
-        $userlikeUnlike = DB::table('like_dislike')
-            ->select('post_id', 'like_dislike.type')
-            ->where('user_id', $userid)
-            ->get()->toArray();
-            //dd($userlikeUnlike);
-            
-
-
         $cat_id = $request->category_id;
-      
-        if ($cat_id != 0) {
+
+        if ($request->category_id) {
 
             $datas = $datas->where('category_id', $request->category_id);
         }
         $tag_id = [];
-     
-        if ( $request->tag_id) {
-           
+
+        if ($request->tag_id) {
+
             $datas = $datas->whereIn('tag_id', $request->tag_id);
             $tag_id = $request->tag_id;
         }
 
         $datas = $datas->where('post.status', '=', '1')
             ->get();
-          //  dd($datas);
-
 
         $post_data = [];
-        $userlikeUnlike1 = [];
+        $likeUnlikedata1 = [];
         $userlikeUnlike1  = [];
+
         foreach ($userlikeUnlike as $userlikeUnlikeData) {
 
 
             $userlikeUnlike1[$userlikeUnlikeData->post_id] =  [
 
                 'type' => $userlikeUnlikeData->type,
+
             ];
         }
+        //  dd($userlikeUnlike1);
         foreach ($likeUnlike as $likeUnlikeData) {
 
 
@@ -106,7 +134,6 @@ class HomeController extends Controller
                 'dis_like_count' => $likeUnlikeData->dis_like_count
             ];
         }
-        
         //dd($likeUnlikedata1);
 
         foreach ($datas as $data) {
@@ -123,7 +150,7 @@ class HomeController extends Controller
                     'category_name' => [$data->category_name],
                     'like_count' => 0,
                     'dis_like_Count' => 0,
-                    'type'=> null,
+                    'type' => null,
 
 
                 ];
@@ -132,26 +159,21 @@ class HomeController extends Controller
 
                     $post['like_count'] =  $likeUnlikedata1[$data->id]['like_count'];
                     $post['dis_like_Count'] =  $likeUnlikedata1[$data->id]['dis_like_count'];
-
                 } else {
                     $post;
                     //  dd($post);
                 }
+
                 if (array_key_exists($data->id, $userlikeUnlike1)) {
-                    // dump($post);
+                    //  dd("ghgkjj");
 
                     $post['type'] =  $userlikeUnlike1[$data->id]['type'];
-                   
                 } else {
                     $post;
-                  
                 }
-                 
-             
                 $post_data[$data->id] = $post;
+            }
 
-            } 
-          
 
 
             // $post = [
@@ -10350,36 +10372,89 @@ class HomeController extends Controller
                 "city_id" => 10
             )
         );
-
-
+        $sun = array(
+            array(
+                "user_id" => 6845,
+                "plan_id" => 9,
+                "city_id" => 13
+            ),
+            array(
+                "user_id" => 6845,
+                "plan_id" => 10,
+                "city_id" => 8
+            ),
+            array(
+                "user_id" => 6845,
+                "plan_id" => 10,
+                "city_id" => 13
+            ),
+            array(
+                "user_id" => 6845,
+                "plan_id" => 11,
+                "city_id" => 8
+            ),
+            array(
+                "user_id" => 6845,
+                "plan_id" => 11,
+                "city_id" => 13
+            ),
+        );
         $array = [];
         foreach ($arr as $data) {
 
-            // if($data['user_id'] == 6845 ){
             if (!(array_key_exists($data['user_id'], $array))) {
                 $arr1 = [
                     'user_id' => $data['user_id'],
                     'plan_id' => [$data['plan_id']],
-                    //   'city_id' => $data['city_id'],
                 ];
                 $array[$data['user_id']] = $arr1;
             }
-
             if (!(in_array($data['plan_id'], $array[$data['user_id']]['plan_id']))) {
-                array_push($array[$data['user_id']]['plan_id'], $data['plan_id']);
-            }
-
-            if (array_key_exists('city_id', $data)) {
-                $arr2 = [
-                    'city_id' => [$data['city_id']],
-                ];
-                $array[$data['plan_id']] = $arr2;
+                // dd($data['plan_id']);
+                $array[$data['user_id']]['plan_id'][] = $data['plan_id'];
             }
         };
+        $arrayFilter = [];
+        $arr5 = [];
 
-        //dd($array);
-        // dd($tag_id);
-        //dd($post_data);
+        foreach ($arr as $data) {
+
+            $userId = $data['user_id'];
+            $planId = $data['plan_id'];
+            if (array_key_exists('city_id', $data)) {
+
+                $cityId = $data['city_id'];
+            } else {
+                $cityId = null;
+            }
+
+
+            if (!isset($arrayFilter[$userId])) {
+                //  dump( "in1");
+                $arrayFilter[$userId] = [
+                    'user_id' => $userId,
+                    'plans' => []
+                ];
+            }
+
+            if (!(array_key_exists($planId, $arrayFilter[$userId]['plans']))) {
+                $arrayFilter[$userId]['plans'][$planId] = [
+                    'plan_id' => $planId,
+                    'cities' => []
+                ];
+            }
+            if (!(in_array($cityId, $arrayFilter[$userId]['plans'][$planId]['cities']))) {
+
+                array_push($arrayFilter[$userId]['plans'][$planId]['cities'],  $cityId);
+            }
+        }
+        $finalData = array_values($arrayFilter);
+        //         echo '<pre>';
+        //         print_r($finalData );
+        //    exit;
+        $finalData = array_values($arrayFilter);
+        //exit;
+        // dd($arrayFilter);
         return view('site/home', compact('post_data', 'getCategory', 'getTag', 'cat_id', 'tag_id'));
     }
 
@@ -10425,16 +10500,123 @@ class HomeController extends Controller
 
     public function show($id)
     {
-        $post = [];
+        $post_data = [];
+        $userlikeUnlike = [];
+        $likeUnlikedata1 = [];
+        $userlikeUnlike1  = [];
+        $userid = Auth::guard('uservalidate')->user()->id;
+        $userlikeUnlike2 = DB::table('like_dislike')
+            ->select('like_dislike.post_id', 'like_dislike.type')
+            ->where('user_id', $userid)
+            ->get()->toArray();
+           // dd($userlikeUnlike2);
         $likeUnlike = DB::table('like_dislike')
             ->select('post_id', 'like_dislike.type', DB::raw('sum(case when type = 1 then 1 else 0 end) as like_count,
-             sum(case when type = 0 then 1 else 0 end) as dis_like_count'))
-            ->groupBy('post_id')
+         sum(case when type = 0 then 1 else 0 end) as dis_like_count'))
+            ->where('post_id', $id)
             ->get()->toArray();
-        $post_data = PostModel::with('admin_post', 'usercheck_post')->where('id', '=', $id)->get()->toArray();
+        $datas = DB::table('post')
+            ->leftjoin('admin', 'post.posted_by_admin', '=', 'admin.id')
+            ->leftJoin('user', 'post.posted_by', '=', 'user.id')
+            ->join('post_category', 'post.id', '=', 'post_category.post_id')
+            ->join('category', 'category.id', '=', 'post_category.category_id')
+            ->join('post_tag', 'post.id', '=', 'post_tag.post_id')
+            ->join('tag', 'tag.id', '=', 'post_tag.tag_id')
+            // ->leftjoin('like_dislike', 'like_dislike.post_id', '=', 'post.id')
+            ->select(
+                'post.id',
+                'post.title',
+                'post.status',
+                'post.photo',
+                'post.body',
+                'post.subtitle',
+                'post.created_at',
+                'user.id as user_id',
+                'tag.tag_name',
+                'category.name as category_name',
+                //'like_dislike.type',
+                DB::raw('IF(admin.name is null, user.name, admin.name) as name'),
 
 
-        return view('site/postDetails', compact('post_data'));
+            )->where('post.id', '=', $id)
+            ->get();
+
+        foreach ($userlikeUnlike2 as $userlikeUnlikeData) {
+
+
+            $userlikeUnlike1[$userlikeUnlikeData->post_id] =  [
+
+                'type' => $userlikeUnlikeData->type,
+
+            ];
+        
+            }
+         
+        foreach ($likeUnlike as $likeUnlikeData) {
+
+
+            $likeUnlikedata1[$likeUnlikeData->post_id] =  [
+
+                'like_count' => $likeUnlikeData->like_count,
+                'dis_like_count' => $likeUnlikeData->dis_like_count
+            ];
+        }
+        foreach ($datas as $data) {
+            //dd($likeUnlikedata);
+            if (!(array_key_exists($data->id, $post_data))) {
+                $post = [
+                    'id' => $data->id,
+                    'title' => $data->title,
+                    'photo' => $data->photo,
+                    'body' => $data->body,
+                    'subtitle' => $data->subtitle,
+                    'created_at' => $data->created_at,
+                    'user_id' => $data->user_id,
+                    'tag_name' => [$data->tag_name],
+                    'name' => $data->name,
+                    'category_name' => [$data->category_name],
+                    'like_count' => 0,
+                    'dis_like_Count' => 0,
+                    'type' => 2,
+
+                ];
+                if (array_key_exists($data->id, $likeUnlikedata1)) {
+
+                    $post['like_count'] =  $likeUnlikedata1[$data->id]['like_count'];
+                    $post['dis_like_Count'] =  $likeUnlikedata1[$data->id]['dis_like_count'];
+                } else {
+                    $post;
+                    //  dd($post);
+                }
+              //  dd($data->id,$userlikeUnlike1[$data->id]['type']);
+
+                if (array_key_exists($data->id, $userlikeUnlike1)) {
+                     
+
+                    $post['type'] =  $userlikeUnlike1[$data->id]['type'];
+                } else {
+                    $post;
+                }
+              //  dd($post['type'] );
+
+                $post_data[$data->id] = $post;
+               // dd($post_data);
+            }
+
+
+            if (!(in_array($data->tag_name, $post_data[$data->id]['tag_name']))) {
+                array_push($post_data[$data->id]['tag_name'], $data->tag_name);
+            } else if (!(in_array($data->category_name, $post_data[$data->id]['category_name']))) {
+                array_push($post_data[$data->id]['category_name'], $data->category_name);
+            }
+        }
+
+      // dd($post_data);
+
+        //  $post_data = PostModel::with('admin_post', 'usercheck_post')->where('id', '=', $id)->get()->toArray();
+
+
+        return view('site/postDetails', compact('post_data', 'likeUnlike'));
     }
 
     /**

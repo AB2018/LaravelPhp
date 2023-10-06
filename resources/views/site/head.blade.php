@@ -14,7 +14,7 @@
 
     <!-- Theme CSS -->
     <link href="{{asset('site/css/clean-blog.min.css')}}" rel="stylesheet">
-    <link href="{{asset('site/css/custom.css')}}" rel="stylesheet">
+    <link href="{{asset('css/custom.css')}}" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="{{asset('site/vendor/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
