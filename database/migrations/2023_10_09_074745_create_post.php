@@ -15,7 +15,7 @@ class CreatePost extends Migration
     {
         Schema::create('post', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+                $table->string('title');
             $table->string('subtitle');
             $table->string('status')->default(0);
             $table->string('photo');

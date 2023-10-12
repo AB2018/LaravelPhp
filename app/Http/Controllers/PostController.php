@@ -9,7 +9,9 @@ use App\Models\PostModel;
 use App\Models\PostTagModel;
 use App\Models\TagModel;
 use Facade\FlareClient\Http\Response;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -26,8 +28,8 @@ class PostController extends Controller
 
     public function index(Request $request)
     {
-       // dd($request->category_id);
-     
+        // dd($request->category_id);
+
         //\DB::connection()->enableQueryLog();
         // $bp = PostModel::with('post_tag')->get()->toArray();
 
@@ -61,54 +63,104 @@ class PostController extends Controller
                 'category.name as category_name',
 
             );
-            $cat_id = $request->category_id;
+        $cat_id = $request->category_id;
+        $status_id = $request->status_id;
 
-            if ($request->category_id) {
-              //  dd($request->category_id);
-                $datas = $datas->where('category_id', $request->category_id);
-            }
-            $tag_id = [];
-    
-            if ($request->tag_id) {
-    
-                $datas = $datas->whereIn('tag_id', $request->tag_id);
-                $tag_id = $request->tag_id;
-            }
-            $datas = $datas->get();
-           
-            foreach ($datas as $data) {
-                if (!(array_key_exists($data->id, $post_data))) {
-                    $post = [
-                        'id' => $data->id,
-                        'title' => $data->title,
-                        'subtitle' => $data->subtitle,
-                        'status' => $data->status,
-                        'body' => $data->body,
-                        'photo' => $data->photo,
-                        'tag_name' => [$data->tag_name],
-                        'category_name' => [$data->category_name],
-                    ];
-                    $post_data[$data->id] = $post;
-    
-                } 
-                if (!(in_array($data->tag_name, $post_data[$data->id]['tag_name']))) {
-                  
-                    array_push($post_data[$data->id]['tag_name'], $data->tag_name);
-                } else if (!(in_array($data->category_name, $post_data[$data->id]['category_name']))) {
-                    array_push($post_data[$data->id]['category_name'], $data->category_name);
-                }
-            } 
-          
-           
-        if ($request->ajax()) {
-            $cruds = PostModel::where('status', '1')->get()->toArray();
-            //dd($cruds);
-        } else {
-            $cruds = PostModel::paginate(3);
+        $likeUnlikedata1 = [];
+        $userlikeUnlike1  = [];
+        $likeUnlike = DB::table('like_dislike')
+            ->select('post_id', 'like_dislike.type', DB::raw('sum(case when type = 1 then 1 else 0 end) as like_count,
+             sum(case when type = 0 then 1 else 0 end) as dis_like_count'))
+            ->groupBy('post_id')
+            ->get()->toArray();
+
+
+        //  dd($userlikeUnlike1);
+        foreach ($likeUnlike as $likeUnlikeData) {
+
+
+            $likeUnlikedata1[$likeUnlikeData->post_id] =  [
+
+                'like_count' => $likeUnlikeData->like_count,
+                'dis_like_count' => $likeUnlikeData->dis_like_count
+            ];
         }
-        return view('post/listPost', compact('post_data','getCategory','cat_id','tag_id','getTag'));
+        if (isset($request->status_id)) {
+            // dd($request->status_id);
+               $datas = $datas->where('status', $request->status_id);
+           }
+
+        if (isset($request->category_id)) {
+            //  dd($request->category_id);
+            $datas = $datas->where('category_id', $request->category_id);
+        }
+        
+        $tag_id = [];
+
+        if ($request->tag_id) {
+
+            $datas = $datas->whereIn('tag_id', $request->tag_id);
+            $tag_id = $request->tag_id;
+        }
+        $datas = $datas->get();
+        $skipRow = 0;
+      //  dd($datas);
+      $paginator ='';
+        foreach ($datas as $data) {
+            if (!(array_key_exists($data->id, $post_data))) {
+                $post = [
+                    'id' => $data->id,
+                    'title' => $data->title,
+                    'subtitle' => $data->subtitle,
+                    'status' => $data->status,
+                    'body' => $data->body,
+                    'photo' => $data->photo,
+                    'tag_name' => [$data->tag_name],
+                    'category_name' => [$data->category_name],
+                    'like_count' => 0,
+                    'dis_like_Count' => 0,
+                ];
+                if (array_key_exists($data->id, $likeUnlikedata1)) {
+
+                    $post['like_count'] =  $likeUnlikedata1[$data->id]['like_count'];
+                    $post['dis_like_Count'] =  $likeUnlikedata1[$data->id]['dis_like_count'];
+                } else {
+                    $post;
+                }
+                $post_data[$data->id] = $post;
+                $collection = new Collection($post_data);
+               
+                $perPage = 3; 
+                $page = request()->get('page', 1); 
+                $pagedData = $collection->slice(($page - 1) * $perPage, $perPage)->all();
+                $paginator = new LengthAwarePaginator($pagedData, count($collection), $perPage, $page, ['path' => request()->url()]);
+            
+
+            }
+
+            if (!(in_array($data->tag_name, $post_data[$data->id]['tag_name']))) {
+
+                array_push($post_data[$data->id]['tag_name'], $data->tag_name);
+            } else if (!(in_array($data->category_name, $post_data[$data->id]['category_name']))) {
+                array_push($post_data[$data->id]['category_name'], $data->category_name);
+            }
+        }
+
+
+        // if ($request->ajax()) {
+        //     $cruds = PostModel::where('status', '1')->get()->toArray();
+        //     //dd($cruds);
+        // } else {
+        //     $cruds = PostModel::paginate(3);
+        // }
+       // dd($paginator);
+     
+        return view('post/listPost', compact('paginator', 'getCategory', 'cat_id', 'tag_id', 'getTag','status_id'));
+       
+     
+       
     }
-   
+
     /**
      * Show the form for creating a new resource.
      *
@@ -224,7 +276,7 @@ class PostController extends Controller
     public function edit($id)
     {
         $id = decrypt($id);
-       
+
         $get = CategoryModel::all();
         $getTag = TagModel::all();
 
@@ -243,7 +295,7 @@ class PostController extends Controller
      */
     public function update(Request $request)
     {
-     //dd("hi");
+        //dd("hi");
         //  dd($request->all());
         $id = $request->id;
 

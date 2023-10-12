@@ -10193,33 +10193,6 @@ class ArrayController extends Controller
         );
 
 
-        $array = [];
-        foreach ($arr as $data) {
-
-            // if($data['user_id'] == 6845 ){
-            if (!(array_key_exists($data['user_id'], $array))) {
-                $arr1 = [
-                    'user_id' => $data['user_id'],
-                    'plan_id' => [$data['plan_id']],
-                    //   'city_id' => $data['city_id'],
-                ];
-                $array[$data['user_id']] = $arr1;
-            }
-
-            if (!(in_array($data['plan_id'], $array[$data['user_id']]['plan_id']))) {
-                array_push($array[$data['user_id']]['plan_id'], $data['plan_id']);
-            }
-        
-            if (array_key_exists('city_id', $data)) {
-                $arr2 = [
-                    'city_id' => [$data['city_id']],
-                ];
-                 $array[$data['plan_id']] = $arr2;
-               
-            }
-          
-        };
-
         $arr = array(
             array(
                 "user_id" => 6845,
@@ -20395,41 +20368,86 @@ class ArrayController extends Controller
                 "city_id" => 10
             )
         );
-
-
+        $sun = array(
+            array(
+                "user_id" => 6845,
+                "plan_id" => 9,
+                "city_id" => 13
+            ),
+            array(
+                "user_id" => 6845,
+                "plan_id" => 10,
+                "city_id" => 8
+            ),
+            array(
+                "user_id" => 6845,
+                "plan_id" => 10,
+                "city_id" => 13
+            ),
+            array(
+                "user_id" => 6845,
+                "plan_id" => 11,
+                "city_id" => 8
+            ),
+            array(
+                "user_id" => 6845,
+                "plan_id" => 11,
+                "city_id" => 13
+            ),
+        );
         $array = [];
         foreach ($arr as $data) {
 
-            // if($data['user_id'] == 6845 ){
             if (!(array_key_exists($data['user_id'], $array))) {
                 $arr1 = [
                     'user_id' => $data['user_id'],
-                    'plan_id' => [$data['plan_id']=>[]],
-                    //   'city_id' => $data['city_id'],
+                    'plan_id' => [$data['plan_id']],
                 ];
                 $array[$data['user_id']] = $arr1;
-                //$arr=[];
+            }
+            if (!(in_array($data['plan_id'], $array[$data['user_id']]['plan_id']))) {
+                // dd($data['plan_id']);
+                $array[$data['user_id']]['plan_id'][] = $data['plan_id'];
+            }
+        };
+        $arrayFilter = [];
+        $arr5 = [];
+
+        foreach ($arr as $data) {
+
+            $userId = $data['user_id'];
+            $planId = $data['plan_id'];
+            if (array_key_exists('city_id', $data)) {
+
+                $cityId = $data['city_id'];
+            } else {
+                $cityId = null;
             }
 
-            if (!(array_key_exists($data['plan_id'], $array[$data['user_id']]['plan_id']))) {
-                $arr2=[$data['plan_id']=>[]];
-                
-                array_push($array[$data['user_id']]['plan_id'], $arr2);
-                dump($arr2);
-                dump($array);
-            }
-            
-        
-            // if (array_key_exists('city_id', $data)) {
-            //     $arr3 = [
-            //         'city_id' => [$data['city_id']],
-            //     ];
-            //      $array[$data['plan_id']] = $arr3;
-               
-            // }
-           
-        }; dd($array[6845]);
 
+            if (!isset($arrayFilter[$userId])) {
+                //  dump( "in1");
+                $arrayFilter[$userId] = [
+                    'user_id' => $userId,
+                    'plans' => []
+                ];
+            }
+
+            if (!(array_key_exists($planId, $arrayFilter[$userId]['plans']))) {
+                $arrayFilter[$userId]['plans'][$planId] = [
+                    'plan_id' => $planId,
+                    'cities' => []
+                ];
+            }
+            if (!(in_array($cityId, $arrayFilter[$userId]['plans'][$planId]['cities']))) {
+
+                array_push($arrayFilter[$userId]['plans'][$planId]['cities'],  $cityId);
+            }
+        }
+        $finalData = array_values($arrayFilter);
+        //         echo '<pre>';
+        //         print_r($finalData );
+        //    exit;
 
     }
 

@@ -61,6 +61,7 @@ class UserController extends Controller
             $id = Auth::guard('uservalidate')->user()->id;
             $countPost = PostModel::with('usercheck_post')->where('posted_by', '=', $id)->count();
             Session::put('postCount', $countPost);
+           // dd($countPost);
             $success = 'success';
             return Response::json($success);
         } else {

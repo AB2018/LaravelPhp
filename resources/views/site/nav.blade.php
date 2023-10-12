@@ -12,6 +12,7 @@
                 @php
                 $postCount = ( Session::get('postCount'));
                 @endphp
+               
                 @php
                     $user_name = '';
                 @endphp
